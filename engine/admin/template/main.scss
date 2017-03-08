@@ -1,0 +1,108 @@
+@function int($value){@return $value / ($value * 0 + 1);}
+@function em($px){@return unquote((int($px) / 16) + 'em');}
+@function rem($px){@return unquote((int($px) / 16) + 'rem');}
+
+body {
+    margin:0;
+    background:#F5F7FA;
+    font-family: Open Sans;
+    -webkit-font-smoothing: antialiased;
+    color: #576077;
+}
+
+@media (min-device-pixel-ratio: 1.25), (min-resolution: 120dpi){
+    html{ font-size: 80%}
+}
+
+ul{margin:0;padding:0;list-style: none;}
+li{line-height:1;}
+
+.body {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+
+.g-main{display: flex;flex-grow: 1}
+.g-left{width: em(200);min-width: em(200);}
+.g-right{flex-grow: 1;width: 75%;}
+
+.g-left,.g-right{margin-left:em(20);margin-top:em(20);box-sizing: border-box;}
+.g-right{margin-right: em(20);}
+
+/* go */
+.icon{
+    display: inline-block;
+    vertical-align: middle;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+
+    width: rem(16);
+    height: rem(16);
+
+    &-read{
+        background-image: url(minimize.svg);
+    }
+    &-set{
+        background-image: url(gear.svg);
+    }
+    &-mes{
+        background-image: url(message.svg);
+    }
+}
+
+.block{
+    border-radius:em(5);
+    background:#fff;
+    padding: em(20);
+    box-sizing: border-box;
+}
+
+.g-head{
+    background:#fff;
+    height: em(50);
+    box-shadow: 0 0 em(15) 0 rgba(37,121,224,.05);
+    display: flex;
+    align-items: center;
+    padding: 0 em(20);
+
+    .logo{
+        width: em(100);
+        height: 100%;
+        background: url(logo.svg) no-repeat center / 100%;
+
+    }
+}
+
+.g-left{}
+.menu {
+    li{margin-top: rem(10);}
+    &-item {
+        display: block;
+        text-decoration: none;
+        padding: 0 rem(15);
+        color: inherit;
+
+        height: rem(35);
+        line-height: rem(35);
+        overflow: hidden;
+        border-radius: rem(7);
+
+
+        .icon{
+        }
+        .title {
+            font-weight:500;
+            font-size: rem(12);
+            margin-left: rem(15);
+        }
+
+        &:not(.active):hover{
+            background: rgba(255,255,255,.5);
+        }
+    }
+    .active{background:#fff;color:#94969A}
+}

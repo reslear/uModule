@@ -1,0 +1,114 @@
+body {
+  margin: 0;
+  background: #F5F7FA;
+  font-family: Open Sans;
+  -webkit-font-smoothing: antialiased;
+  color: #576077; }
+
+@media (min-device-pixel-ratio: 1.25), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+  html {
+    font-size: 80%; } }
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+li {
+  line-height: 1; }
+
+.body {
+  width: 100%;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 100vh; }
+
+.g-main {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1; }
+
+.g-left {
+  width: 12.5em;
+  min-width: 12.5em; }
+
+.g-right {
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  width: 75%; }
+
+.g-left, .g-right {
+  margin-left: 1.25em;
+  margin-top: 1.25em;
+  box-sizing: border-box; }
+
+.g-right {
+  margin-right: 1.25em; }
+
+/* go */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 1rem;
+  height: 1rem; }
+  .icon-read {
+    background-image: url(minimize.svg); }
+  .icon-set {
+    background-image: url(gear.svg); }
+  .icon-mes {
+    background-image: url(message.svg); }
+
+.block {
+  border-radius: 0.3125em;
+  background: #fff;
+  padding: 1.25em;
+  box-sizing: border-box; }
+
+.g-head {
+  background: #fff;
+  height: 3.125em;
+  box-shadow: 0 0 0.9375em 0 rgba(37, 121, 224, 0.05);
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 1.25em; }
+  .g-head .logo {
+    width: 6.25em;
+    height: 100%;
+    background: url(logo.svg) no-repeat center/100%; }
+
+.menu li {
+  margin-top: 0.625rem; }
+
+.menu-item {
+  display: block;
+  text-decoration: none;
+  padding: 0 0.9375rem;
+  color: inherit;
+  height: 2.1875rem;
+  line-height: 2.1875rem;
+  overflow: hidden;
+  border-radius: 0.4375rem; }
+  .menu-item .title {
+    font-weight: 500;
+    font-size: 0.75rem;
+    margin-left: 0.9375rem; }
+  .menu-item:not(.active):hover {
+    background: rgba(255, 255, 255, 0.5); }
+
+.menu .active {
+  background: #fff;
+  color: #94969A; }
