@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Документация по установке скрипта - uScript.pro</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/main.css">
+        <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    </head>
+    <body class="php clr">
+
+        <header class="header">
+            <div class="wrap"><a href="http://uscript.pro/" class="header-logo">SCRIPT</a>
+                <ul class="page-lang" role="tablist">
+                    <li role="presentation" class="active"><a href="http://uscript.pro/shop/55/item/multifiltr-tovarov">Перейти на страницу скрипта</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+
+<div class="wrap">
+
+ <nav class="col-questions">
+ <ul class="questions-l nav" role="navigation">
+ <li class="active"><a href="#step0">Введение</a></li>
+ <li><a href="#step1">Первый шаг</a></li>
+  <li><a href="#step2">Второй шаг</a></li>
+  <li><a href="#step3">Третий шаг</a></li>
+  <li><a href="#step4">Четвертый шаг</a></li>
+ <li><a href="#step5">Пятый шаг</a></li>
+ </ul>
+ </nav>
+
+ <div class="col-docs">
+ <div class="api clr">
+
+<div class="float-c">Установка скрипта <b>«Мультифильтр товаров»</b></div>
+
+ <a id="step0" name="step0" class="api-anchor"></a> 
+ <div class="api-section clr">
+ <div class="api-descr">
+ <h1 class="api-header">Введение</h1>
+Благодарим за покупку скрипта! Установка скриптового решения займет некоторое время. Пожалуйста, внимательно читайте инструкции и старайтесь следовать всем рекомендациям. <br><br>
+
+<br>
+
+ <div class="alert alert-info">
+ Перед установкой, сделайте полный бэкап шаблонов на случай, если вы в какой-то момент решите вернуть прежний вид сайту или отдельным его элементам. Сделать это можно в <b>Панели управления » Управление дизайном » Backup шаблонов</b>.
+ </div>
+
+</div>
+</div>
+
+<a id="step1" name="step1" class="api-anchor"></a> 
+<div class="api-section clr">
+    <div class="api-descr">
+	<h1 class="api-header">Первый шаг: активация PHP</h1>
+	<br>
+	Убедитесь, что на вашем сайте активна услуга PHP. Для этого перейдите на главную страницу панели управления и обратите внимание на правую часть страницы. В случае наличия активной услуги вы увидите текст "PHP детали".
+	<div align="center"><img src="img/7.png" width="800px"></div>
+	– перейдите к следующему шагу установки, PHP-услуга у вас активна.
+	Если такой текст отсутствует, значит услуга PHP отключена или просрочена. Для подключения PHP необходимо оплатить премиум пакет, включающий возможность использования PHP-скриптов, либо <a href="http://www.ucoz.ru/qa/index.php/20/?show=34#a34" target="_blank">заказать данную услугу отдельно</a>.
+    </div>
+</div> 
+
+ <a id="step2" name="step2" class="api-anchor"></a> 
+<div class="api-section clr">
+    <div class="api-descr">
+	<h1 class="api-header">Второй шаг: загрузка скриптов на FTP PHP</h1>
+	<br>
+	<h2>Этап 1. Установка пароля</h2>
+ <div class="alert alert-warning">
+ Если у вас задан пароль к FTP PHP, сразу же переходите к следующему этапу.
+ </div>
+	Перейдите на главную страницу панели управления вашим сайтом, в правой верхней части нажмите на ссылку <b class="bold">«PHP детали»</b>.
+	<div align="center"><img src="img/1.png" width="900px"></div>
+	В открывшемся окне кликните на ссылку: <b class="bold">«Пароль не установлен»</b>.
+	<div align="center"><img src="img/2.png" width="900px"></div>
+	Мы попадем на страницу установки пароля на <b>FTP PHP</b>. Заполните поля, продолжайте следовать инструкциям системы.
+	<br><br>
+	<h2>Этап 2. Подключение к PHP FTP серверу</h2>
+	После установки пароля, скачайте FTP-клиент, рекомендуем <a href="http://filezilla.ru/" target="_blank">бесплатный FTP клиент FileZilla</a>. После установки программы, в верхней части вводим параметры подключения: 
+	<br>
+	<ul>
+	    <li>Сервер: <i>s2000.ucoz.net</i></li>
+	    <li>Логин (FTP login): <i>введите свой логин, который указан в меню "PHP детали"</i></li>
+	    <li>Пароль: <i>пароль который вы ввели ранее в специальном разделе</i></li>
+	</ul>
+	<br>
+	После заполнения полей нажмите на кнопку <b class="bold">«Быстрое соединение»</b>.
+	<br>
+	<div align="center"><img src="img/3.png" width="900px"></div>
+	<br><br>
+	<h2>Этап 3. Загрузка скриптов на PHP FTP сервер</h2>
+	После успешного подключения вы увидите каталог под именем <b class="bold">«scripts»</b> в правой части окна программы. <u>Обязательно переходим</u> в этот каталог двойным кликом по нему.
+	<br>
+	<div align="center"><img src="img/4.png" width="900px"></div>
+	<br>
+	Теперь загрузите в этот каталог папку из архива со скриптом <b class="bold">«multifilter»</b>. Загрузить не составит трудностей, просто перетащите эту папку в правый диалог (где отображаются каталоги и файлы хранящиеся на сервере).
+	<br>
+	Узнать статус передачи файлов вы можете в окне статуса, которое находится в нижней части программы, там отображаются файлы которые ожидают передачи и те, которые не удалось передать, в частности которые были успешно переданы.
+    </div>
+</div> 
+
+<a id="step3" name="step3" class="api-anchor"></a> 
+<div class="api-section clr">
+    <div class="api-descr">
+	<h1 class="api-header">Третий шаг: загрузка изображений на сайт</h1>
+	<br>
+	Перейдите в <b class="bold">Панель управления » Файловый менеджер</b>.
+	<div align="center"><img src="img/5.png" width="800px"></div>
+	В правом верхнем углу кликните на кнопку <b>"Создать папку"</b>, введите название папки <b>img</b>.
+	<div align="center"><img src="img/6.png" width="800px"></div>
+	Кликните на галочку и ура, мы создали папку с нужным именем!:)
+	<br><br>
+	Теперь зайдите в созданную папку и загрузите в эту папку все изображения из папки "иконки".
+    </div>
+</div> 
+
+ <a id="step4" name="step4" class="api-anchor"></a> 
+<div class="api-section clr">
+ <div class="api-descr">
+ <h1 class="api-header">Четвёртый шаг: установка кода</h1>
+<br>
+Перейдите в <b class="bold">Панель управления » Управление дизайном » Интернет-магазин: Вид товара в каталоге</b>, и оберните весь вид товаров в следующие метки:
+<pre class="code">
+&lt;!--ENTRY$ID$-->
+
+ <span style="color:#E5392F;">... тут вид товара ...</span>
+
+&lt;!--/ENTRY$ID$-->
+</pre>
+
+<div class="alert alert-warning">
+В то место, что выделено красным цветом – должен быть шаблон вида товаров. 
+</div>
+
+затем сохраните изменения. <br><br>
+
+Далее перейдите в <b class="bold">Панель управления » Управление дизайном » Интернет-магазин: Каталог товаров</b>, и в подходящее место разместите следующий код:
+<pre class="code">
+&lt;?if($MODULE_ID$ == "shop" && ($PAGE_ID$ == "category"))?>
+&lt;div class="cssload-container">&lt;div class="cssload-loading">&lt;i>&lt;/i>&lt;i>&lt;/i>&lt;/div>&lt;/div>
+&lt;div class="multifilter">
+    &lt;div id="slider-price" style="display:none;margin-bottom:30px;">&lt;input type="text" id="default_rangeSlider" name="default_rangeSlider" value="">&lt;/div>
+    &lt;?if($FILTER_SELECTOR$ && ($PAGE_ID$ != 'allgoods'))?>&lt;?$DRAW_BLOCK$('FILTER_SELECTOR','flist')?>&lt;?endif?>
+    &lt;button class="reset-filters" onclick="resetAll();">Сбросить фильтры&lt;/button>
+&lt;/div>
+&lt;style>.multifilter{display:none}&lt;/style>&lt;script src="/php/multifilter/multifilter.php?cid=$CID$">&lt;/script>
+&lt;?endif?>
+</pre>
+
+Далее в таблицу стилей разместите код:
+<pre class="code">
+.cssload-container{
+ display: block;
+ margin:35px auto;
+ width:70px;
+}
+.cssload-loading i{
+ width: 35px;
+ height: 35px;
+ display: inline-block;
+ background: rgb(255,89,84);
+ border-radius: 50%;
+}
+.cssload-loading i:nth-child(1){
+ animation:cssload-loading-ani1 0.55s ease-in-out infinite;
+ -o-animation:cssload-loading-ani1 0.55s ease-in-out infinite;
+ -ms-animation:cssload-loading-ani1 0.55s ease-in-out infinite;
+ -webkit-animation:cssload-loading-ani1 0.55s ease-in-out infinite;
+ -moz-animation:cssload-loading-ani1 0.55s ease-in-out infinite;
+}
+.cssload-loading i:nth-child(2){
+ background: rgb(0,168,206);
+ margin-left: -7px;
+ animation:cssload-loading-ani1 0.55s ease-in-out 0.275s infinite;
+ -o-animation:cssload-loading-ani1 0.55s ease-in-out 0.275s infinite;
+ -ms-animation:cssload-loading-ani1 0.55s ease-in-out 0.275s infinite;
+ -webkit-animation:cssload-loading-ani1 0.55s ease-in-out 0.275s infinite;
+ -moz-animation:cssload-loading-ani1 0.55s ease-in-out 0.275s infinite;
+}
+@keyframes cssload-loading-ani1{
+ 70%{
+ transform:scale(0.5);
+ }
+}
+@-o-keyframes cssload-loading-ani1{
+ 70%{
+ -o-transform:scale(0.5);
+ }
+}
+@-ms-keyframes cssload-loading-ani1{
+ 70%{
+ -ms-transform:scale(0.5);
+ }
+}
+@-webkit-keyframes cssload-loading-ani1{
+ 70%{
+ -webkit-transform:scale(0.5);
+ }
+}
+@-moz-keyframes cssload-loading-ani1{
+ 70%{
+ -moz-transform:scale(0.5);
+ }
+}
+</pre>
+
+<div class="alert alert-warning">
+Скрипт мультифильтра работает только на странице категории в шаблоне <b class="bold">«Каталог товаров»</b>.
+ </div>
+
+ </div>
+</div>
+
+
+<a id="step5" name="step5" class="api-anchor"></a> 
+<div class="api-section clr">
+ <div class="api-descr">
+ <h1 class="api-header">Пятый шаг: настройка и использование</h1>
+ <br>
+  Вся настройка и управление происходит в конфиг-файле <b>config.php</b>, который мы загружали на FTP PHP вместе с папкой <b class="bold">«multifilter»</b>. Давайте рассмотрим настройки детально.
+ <br><br>
+<ul>
+<b style="color:#E5392F;font-size:16pt;">ВАЖНАЯ НАСТРОЙКА:</b> <li> <code style="color:#E5392F;background-color: #F2DEDE">ftp_login</code> – FTP-логин вашего сайта, это обязательная настройка для корректной работы скрипта. Найти свой FTP логин вы можете перейдя на главную страницу панели управления, кликнув на ссылку <b class="bold">FTP детали</b>, которая расположена по правой стороне, в открывшемся окне вы увидите <b>FTP login</b>, а напротив него и будет его нужный нам логин.</li>
+
+<div align="center"><img src="img/18.png"></div>
+
+<li><code style="color:#E5392F;background-color: #F2DEDE">entries</code> – количество товаров на страницу каталога, которое должно совпадать со значением в панели управления (либо оно должно совпадать по факту. То есть если у вас стилизованный вид товаров, и в каталоге выводится всего три товара, в настройках нужно указать число <b>3</b>).</li>
+
+<div align="center"><img src="img/20.png" width="900px"></div>
+
+<li><code>cols</code> – функция по регулированию вывода товаров табличной версткой или блочной версткой. Принимает значения "1" – включить отображение товаров таблично <i>(&lt;table>)</i>, или "2" – включить отображение товаров поблочно <i>(&lt;div>)</i>.
+
+<br>
+
+<ul>
+<li>Табличный вариант <i>(значение "1")</i> вполне подойдет новичкам или тем, кто не редактировал внешний вид отображения товаров.
+
+<li style="margin-left:30px"><code>cols-w</code> – количество колонок для отображения товара, которое должно совпадать со значением в панели управления</li>
+
+<div align="center"><img src="img/19.png" width="900px"></div>
+
+<b>Если у вас наблюдаются проблемы с отображением, установите блочный вариант.</b></li>
+
+<br><br>
+
+<li>Блочный вариант <i>(значение "2")</i> поможет вам самостоятельно настроить отображение колонок, также даст возможность посредством CSS устанавливать несколько видов отображения. <br> Совместим со скриптом <b>"переключение вида просмотра товаров"</b> — <a href="http://uscript.pro/shop/36/item/perekljuchenie-vida-prosmotra-kartochki-tovara" target="_blank">http://uscript.pro/shop/36/item/perekljuchenie-vida-prosmotra-kartochki-tovara</a>.</li>
+<br>
+</ul>
+
+</li>
+
+<li><code>hiddenFilterOne</code> <b style="color:#E5392F">(NEW)</b> – функция по включению\отключению блоков с одним пунктом фильтрации. Принимает значения 0 (отключить настройку) или 1 (включить настройку)</li>
+
+<br>
+
+<li><code>toggleFilter</code> – настройка по включению\отключению возможности сворачивания и разворачивания блоков с фильтрами. Принимает значения 0 (отключить настройку) или 1 (включить настройку)</li>
+
+<br>
+
+<li><code>hiddenFilter</code> – настройка по включению\отключению возможности сворачиванию блоков в фильтре. Принимает значения 0 (отключить настройку) или 1 (включить настройку)</li>
+    
+
+<br>
+
+<li><code>sliderPrice</code> – настройка по включению\отключению стилизованного слайдера регулировки цены. Принимает значения 0 (отключить настройку) или 1 (включить настройку)</li>
+<ul style="margin-left:3%">
+<li><code>shop-price</code> – поднастройка к выбору варианта дизайна для слайдера цены. Принимает значения от 1 до 5.</li>
+
+<br>
+<div style="float:left;width:50%">
+<div align="center">Первый вариант — значение <b>1</b> <br> <img src="img/8.png"></div>
+<br>
+<div align="center">Второй вариант — значение <b>2</b> <br> <img src="img/9.png"></div>
+<br>
+<div align="center">Третий вариант — значение <b>3</b> <br> <img src="img/10.png"></div>
+</div>
+
+<div style="float:right;width:50%">
+<br>
+<div align="center">Четвертый вариант — значение <b>4</b> <br> <img src="img/11.png"></div>
+<br>
+<div align="center">Пятый вариант — значение <b>5</b> <br> <img src="img/12.png"></div>
+</div>
+
+<div style="clear:both;"></div>
+
+<br>
+
+<li><code>PRICE-filter</code> – настройка по установке цены в слайдере цены. Указывается значение от 0 (выкл) до 1 (вкл). Стандартно отключено и определяется автоматически в зависимости от категории.
+<li style="margin-left:30px;"><code>MIN-price</code> – поднастройка минимальной цены в слайдере. Указывать цифровые значения слитно, т.е. без пробелов</li>
+<li style="margin-left:30px;"><code>MAX-price</code> – поднастройка максимальной цены в слайдере. Указывать цифровые значения слитно, т.е. без пробелов</li>
+<li style="margin-left:30px;"><code>prefix</code> <b style="color:#E5392F">(NEW)</b> – настройка по установки знака валюты ПЕРЕД ценником. Пример: $5</li>
+<li style="margin-left:30px;"><code>postfix</code> <b style="color:#E5392F">(NEW)</b> – настройка по установки знака валюты ПОСЛЕ ценника. Пример: 5$.</li>
+
+</ul>
+
+<br>
+
+<li><code>checkbox</code> – настройка выбора оформления флажков (чекбоксов). Указывается значение от 1 до 5.</li>
+
+<br>
+<div style="float:left;width:50%">
+<div align="center">Первый вариант — значение <b>1</b> <br> <img src="img/13.png"></div>
+<br>
+<div align="center">Второй вариант — значение <b>2</b> <br> <img src="img/14.png"></div>
+<br>
+<div align="center">Третий вариант — значение <b>3</b> <br> <img src="img/15.png"></div>
+
+</div>
+
+<div style="float:right;width:50%">
+<br>
+<div align="center">Четвертый вариант — значение <b>4</b> <br> <img src="img/16.png"></div>
+<br>
+<div align="center">Пятый вариант — значение <b>5</b> <br> <img src="img/17.png"></div>
+</div>
+
+<div style="clear:both;"></div>
+
+<br>
+
+<li><code>iCheck</code> – настройка по включению\отключению плагина iCheck — <a href="http://ruseller.com/lessons/les1676/demo/" target="_blank">http://ruseller.com/lessons/les1676/demo/</a>. Принимает значения 0 (отключить настройку) или 1 (включить настройку). При включении функции становятся недоступными для выбора предыдущие варианты чекбоксов, чтобы они были доступны, нужно соответственно отключить iCheck (значение 0).</li>
+<ul style="margin-left:3%">
+<li><code>iCheckDesign</code> – поднастройка к выбору стиля чекбоксов. Принимает значения от 1 до 5. Снизу демонстрация в виде изображения. <br>
+<div align="center"><img src="img/23.png"></div>
+<p>Сейчас, в стандартном режиме все изображения имеют один цвет, черный. Если вы желаете изменить на какой-либо другой (в целом, присутствует большой выбор цветов), рекомендуем обратить внимание на сайт где размещен планин iCheck — <a href="https://github.com/fronteed/icheck/tree/1.x/skins" target="_blank">https://github.com/fronteed/icheck/tree/1.x/skins</a>. <br><br>
+
+Первый вариант называется – <b>minimal</b> <br> Второй — <b>square</b> <br> Третий – <b>flat</b>
+
+<br><br>
+
+У этих трех вариантов присутствуют варианты цветов по ссылке что выше. Особенность их применения – они должны быть также названы идентично и загружены в файловой менеджер в папку img, то есть вы должны просто заменить текущий черный на нужный цвет.
+
+</li>
+</ul>
+
+<br>
+
+<li><code>scrollBar</code> – настройка по включению\отключению стилизованного скролл-бара. Принимает значения 0 (отключить настройку) или 1 (включить настройку)</li>
+<ul style="margin-left:3%">
+<li><code>color-bar</code> – поднастройка к выбору цвета ползунка (скроллбара) в HEX-формате, таблицу цветов вы можете найти перейдя по ссылке: <a href="http://www.color-hex.com/" target="_blank">http://www.color-hex.com/</a>. Настройка принимает значение в виде: <b>#2e00c5</b></li>
+</ul>
+
+<br>
+
+<li><code>background</code> – настройка по включению\отключению смены фона блока при выборе опции и ЕСЛИ выбрана опция. Принимает значения 0 (отключить настройку) или 1 (включить настройку)</li>
+<ul style="margin-left:3%">
+<li><code>color-background</code> – поднастройка к выбору фона при выборе опции в HEX-формате, таблицу цветов вы можете найти перейдя по ссылке: <a href="http://www.color-hex.com/" target="_blank">http://www.color-hex.com/</a>. Настройка принимает значение в виде: <b>#2e00c5</b></li>
+</ul>
+
+<br>
+<li><code>all-hide</code> – настройка по включению\отключению пункта "все" в фильтре. Принимает значения 0 (отключить настройку) или 1 (включить настройку)</li>
+
+</ul>
+
+
+<br><br>
+
+<h2> Настройка модуля "интернет-магазин". </h2>
+
+Для корректной работы скрипта, вам нужно выставить соответствующие настройки. Перейдите в <b class="bold">Панель управления » Интернет-магазин: Настройки модуля.</b> <br><br>
+
+<p style="padding:0"> 1) Убедитесь в том, чтобы у опции <b>«Тип отображения меню фильтрации»</b> было выставлено значение на <b class="bold">«Наборы ссылок</b>».</p>
+<p style="padding:0"> 2) Для работы фильтра в требуемых разделах, отметьте нужные пункты фильтрации напротив опции <b>«Список полей, участвующих в меню фильтрации»</b></p>
+<p style="padding:0"> 3) Убедитесь в отключенной опции <b>«Дублировать фильтры товаров в адресной строке»</b></p>
+
+<br>
+
+<div class="alert alert-info">
+<b>Особенность работы при сортировке:</b> для каждого указанного фильтра сортировка происходит отдельно, а не глобально, как должно было быть. <br>
+Это происходит потому, что для каждого фильтра через пхп-скрипт делается запрос к юкозу, с указанными сортировками и ценами, а после все товары складыватся и выводятся.
+То есть, например, в фильтре "Наименование" указав "Новые очки" и "Перчатки" и сортировку по наименованию, то сначала будут выбраны все товары "Новые очки" с сортировкой по имени, затем "Перчатки" с сортировкой по имени, и результат затем просто комбинируется в xml-ответ браузеру.
+ </div> 
+
+
+<h2> Стилизация некоторых элементов. </h2>
+
+В том случае, если вы желаете стилизовать тот или иной элемент, откройте файл <b>style.css</b> который расположен в папке <b class="bold">«multifilter»</b> на FTP PHP.
+
+<br><br>
+
+<div class="alert alert-warning">
+ Будьте крайне внимательны при редактировании этого файла, в нем присутствуют условия вида <b>&lt;?php if ($shop->config['sliderPrice']) { ?></b>, с помощью которых выводятся нужные элементы в соответствие с заданными настройками в конфиг-файле <b>config.php</b>. Подобные конструкции сделаны для того, чтобы оптимизировать сам скрипт для быстрой загрузки. <br>
+Также обращаем ваше внимание на то, что к каждому классу указаны комментарии, которые содержат информацию о том, что стилизует указанный класс и\или к чему обращается.
+ </div> 
+
+  <br>
+
+  <div class="eng-install">Установка завершена. Если у вас возникли вопросы, которые не затрагивались в документации, спрашивайте в комментариях к товару.</div> <br>
+ </div>
+</div>
+
+
+ </div>
+</div>
+ </div>
+
+
+<script src="js/highlight.pack.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
