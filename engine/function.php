@@ -1,7 +1,20 @@
 <?php
 
-    if(!defined('uphp')) exit;
+//    if(!defined('uphp')) exit;
 
+
+    /* Функции для работы с файлами
+    ================================================================================== */
+
+
+    // функция возвращает ответ скрипта
+    function file_return_include( $patch, $empty = array() ) {
+        return is_file($patch) ? include $patch : $empty;
+    }
+
+
+    /* ыыыыыыы
+    ================================================================================== */
 
     # Склонение числительных
     function decl($n, $forms, $isEchoNumber = true){
