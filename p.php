@@ -8,6 +8,7 @@
 
     include_once 'engine/classes/Template.php';
 
+
     class Page {
 
         public $template;
@@ -16,6 +17,8 @@
 
             if( class_exists('Template', false) ){
                 $this->template = new Template();
+            } else{
+                user_error("Класс \"Template\" не объявлен.");
             }
         }
 
@@ -41,11 +44,13 @@
         }
 
         public function error_404() {
-            return '404';
+            return $this->template ? $this->template->file('engine/template/404.html') : '';
         }
 
-        public function get_g_template( $mask = '_*', $array = array() ) {
+        public function get_g_template( $mask, $return_array ) {
 
+            $mask = $mask ? $mask : '_*';
+            $array = array();
             $files = glob('engine/template/'.$mask.'.html');
 
             for( $i = 0; $i < count($files); $i++ ) {
@@ -54,7 +59,9 @@
 
                 if( $filename ) {
                     $name = pathinfo($filename);
-                    $array[strtoupper($name['filename'])] = file_get_contents($filename);
+                    $document = $this->template->file($filename,  $return_array);
+
+                    $array[strtoupper($name['filename'])] = $document;
                 }
             }
 
@@ -85,10 +92,10 @@
             }
 
             // работа с глобальными блоками
-            $globals_array = $this->get_g_template();
+            $globals_array = $this->get_g_template(null, $return_array);
             $return_array = array_merge($return_array,  $globals_array);
 
-            return $this->template->init($tmpl_patch,  $return_array);
+            return $this->template->file($tmpl_patch,  $return_array);
         }
     }
 

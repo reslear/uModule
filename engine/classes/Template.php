@@ -5,17 +5,16 @@
 
     class Template {
 
-        public $parents = array();
         public $array;
 
-        private function runCondition( $condition ) {
+        public function runCondition( $condition ) {
 
             ob_start();
             echo eval("return $condition;");
             $result = ob_get_clean();
 
             if( strpos($result, 'error') !== false ) {
-                user_error("������, ��� ����� ������� \"$condition\"");
+                user_error("Ошибка, при парсе условия \"$condition\"");
                 return false;
             } else {
                 return $result;
@@ -23,7 +22,7 @@
 
         }
 
-        private function checkCondition( $condition, $content ) {
+        public function checkCondition( $condition, $content ) {
 
             $result = $this->runCondition( $condition );
             $block = explode( '<?else?>', $content );
@@ -31,7 +30,7 @@
             return $result ? $block[0] : ( isset($block[1]) ? $block[1] : '');
         }
 
-        public function check_var( $matches) {
+        public function check_var( $matches ) {
             return isset($this->array[$matches[1]]) ? '$this->array["'.$matches[1].'"]' : '';
         }
 
@@ -43,16 +42,12 @@
             $conditions = array_reverse($output[1]);
             $blocks_inner = array_reverse($output[2]);
 
-//            if( empty($blocks_inner) ) return false;
-
             foreach( $blocks_inner as $i => $block ) {
 
                 $outer = $blocks_outer[$i];
 
                 $temp = $this->parseBlocksRecursive( $block[0] );
                 $parsed_block = $this->checkCondition($conditions[$i][0], $temp);
-
-//                echo '!'.$temp.'!';
 
                 $template = substr_replace( $template, $parsed_block, $outer[1], strlen($outer[0]) );
 
@@ -62,12 +57,11 @@
 
         }
 
-        public function init( $file, $array = array() ){
+        private function init( $source, $array ){
+
             $this->array = $array;
 
-            $html = implode( '', file( $file ) );
-
-            $html = preg_replace_callback('/\$(.+?)\$/', array($this, 'check_var'), $html);
+            $html = preg_replace_callback('/\$(.+?)\$/', array($this, 'check_var'), $source);
             $output = $this->parseBlocksRecursive( $html );
 
             foreach( $this->array as $key => $value ) {
@@ -76,6 +70,26 @@
 
             return $output;
         }
+
+
+
+        /* pub */
+        public function file( $file_patch, $array = array() ){
+
+            if( is_file($file_patch) ) {
+
+                $source = file_get_contents($file_patch);
+                return $this->init($source, $array);
+            } else {
+
+                user_error("Ошибка: отсутствует файл \"$file_patch\".");
+            }
+        }
+
+        public function text( $source, $array = array() ){
+            return $this->init($source, $array);
+        }
+
     }
 
 /* OLDDDDDDD
