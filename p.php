@@ -46,12 +46,16 @@
 
         public function get_g_template( $mask = '_*', $array = array() ) {
 
-            foreach (glob('engine/template/'.$mask.'.php') as $filename) {
+            $files = glob('engine/template/'.$mask.'.html');
 
-                $name = explode('.', $filename);
-                if( $name[0] ) continue;
+            for( $i = 0; $i < count($files); $i++ ) {
 
-                $array[strtoupper($name[0])] = file_get_contents($filename);
+                $filename = $files[$i];
+
+                if( $filename ) {
+                    $name = pathinfo($filename);
+                    $array[strtoupper($name['filename'])] = file_get_contents($filename);
+                }
             }
 
             return $array;
@@ -76,13 +80,13 @@
 
             $return_array = isset($page['arr']) ? $page['arr'] : include $page['handler'];
 
-            // работа с глобальными блоками
-            $global_array = $this->get_g_template();
-            print_r($global_array);
-
             if( !$return_array ){
                 return $this->error_404();
             }
+
+            // работа с глобальными блоками
+            $globals_array = $this->get_g_template();
+            $return_array = array_merge($return_array,  $globals_array);
 
             return $this->template->init($tmpl_patch,  $return_array);
         }

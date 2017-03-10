@@ -9,12 +9,16 @@
 
     <body>
         <header>$_HEADER$</header>
-        <main>
-            <h1>$H1$</h1>
-            <p>$CONTENT$</p>
+        <main style="display:flex">
+            $_LEFT$
+            <div style="flex-grow:1">
+                <h1>$H1$</h1>
+                <p>$CONTENT$</p>
+            </div>
+            $_RIGHT$
         </main>
         <footer>$_FOOTER$</footer>
-        $_SCRIPTS$
+        $_SCRIPT$
     </body>
 
 </html>
