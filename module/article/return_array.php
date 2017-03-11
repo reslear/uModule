@@ -3,7 +3,7 @@
     $id = $page['regex_result'][1];
 
     $page_array = array(
-        'H1'=>'заголовк статьи!',
+        'H1'=>'заголовк статьи № '.$id,
         'TITLE' => 'Статья имя',
         'CONTENT' => 'Статья №' .$id
     );
