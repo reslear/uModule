@@ -11,27 +11,22 @@
         function __construct( $default ) {
 
             if( !class_exists('Template', false) ) return user_error("Класс \"Template\" не объявлен. Выход.");
-            if( !function_exists('array_replace_recursive') ) return user_error("Не найден pollyfill функции \"array_replace_recursive\". Выход.");
 
             $this->template = new Template();
 
             // дефольтные значения
-            $this->option = array_replace_recursive(array(
+            $this->option = array_merge(array(
                 'url'   => 'main',
                 'table' => array(),
                 'patch' => 'engine/template/',
                 'page404' => 'engine/template/404.html',
-                'global'  => array(
-                    'PAGE' => array(
-                        'URL' => ''
-                    )
-                )
+                'global'  => array()
             ), $default);
 
             $this->page_options = array(
                 'regex'        => '',
                 'regex_result' => array(),
-                'template'     => '',
+                'template'     => 'main.html',
                 'handler'      => ''
             );
         }
@@ -58,6 +53,7 @@
         }
 
         public function error_404() {
+            header("HTTP/1.1 404 Not Found");
             $array = $this->parse_user_variable( $this->option['global'] );
             return $this->template ? $this->template->file($this->option['page404'], $array ) : '';
         }
@@ -125,7 +121,7 @@
             $template_url = $option['patch'].$page['template'];
             if( !file_exists($template_url) ) return $this->error_404();
 
-
+            // handler
             $return_array = isset($page['arr']) ? $page['arr'] : $this->includeClousure($page);
             if( !$return_array ) {
                 return $this->error_404();
@@ -133,7 +129,8 @@
 
             // добавляем глобальные переменные
             $user_array = $this->parse_user_variable($option['global']);
-            $return_array = array_merge($return_array,  $user_array);
+            $return_array = array_merge($user_array, $return_array);
+
 
             // работа с глобальными блоками
             $globals_array = $this->get_g_template(array('array' => $return_array));

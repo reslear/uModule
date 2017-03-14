@@ -1,11 +1,13 @@
-<div style="background:rgba(0,0,255,.1);padding:5px;">
-
-    <div>левый слайдер</div>
-    <ul>
-        <li><a href="$PAGE_URL$article/3">Статья 3</a></li>
-        <li><a href="$PAGE_URL$article/4">Статья 4</a></li>
-        <li><a href="$PAGE_URL$article/7">Статья 7</a></li>
-        <li><a href="$PAGE_URL$article/99">Статья 99</a></li>
-    </ul>
-
+<div class="global-aside-left">
+    <div class="block-logo" data-text="function i(e){var n=e.url.indexOf(s)!=-1,i=document.createElement(n?script:e.cache?style:link);e.cache?i.innerHTML=e.cache:n?i.src=e.url:(i.href=e.url,i.rel=stylesheet),i.setAttribute(e.url);var r=document.head.querySelectorAll(f);return r=r[r.length-1],r?document.head.insertBefore(i,r.nextSibling):document.head.insertBefore(i,document.head.firstChild)">
+        <a href="$PAGE_MAIN_URL$" class="sprite logo" title="Перейти на главную страницу"></a>
+    </div>
+    <div class="block-menu">
+        <div class="menu-title"><i class="icon menu"></i>Меню</div>
+        <ul class="menu-items no-dot">
+            <li class="menu-item"><a href="$PAGE_MAIN_URL$" class="ro home <?if($PAGE_MODULE_NAME$=='main')?>active<?endif?>">Главная Страница</a></li>
+            <li class="menu-item"><a href="$PAGE_MAIN_URL$script" class="ro js <?if($PAGE_MODULE_NAME$=='script')?>active<?endif?>">Скрипты</a></li>
+            <li class="menu-item"><a href="$PAGE_MAIN_URL$article" class="ro css <?if($PAGE_MODULE_NAME$=='article')?>active<?endif?>">Статьи</a></li>
+        </ul>
+    </div>
 </div>

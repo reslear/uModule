@@ -1,24 +1,16 @@
 <!DOCTYPE HTML>
 <html lang="ru">
 
-    <head>
-        <meta charset="utf-8">
-        <title>$TITLE$</title>
-        $_HEAD$
-    </head>
+<meta charset="utf-8">
+<title>$TITLE$</title>
+$_HEAD$
 
-    <body>
-        <header>$_HEADER$</header>
-        <main style="display:flex">
-            $_LEFT$
-            <div style="flex-grow:1">
-                <h1>$H1$</h1>
-                <p>$CONTENT$</p>
-            </div>
-            $_RIGHT$
-        </main>
-        <footer>$_FOOTER$</footer>
-        $_SCRIPT$
-    </body>
-
-</html>
+<div class="global-wrap">
+    <div class="global-main">
+        $_LEFT$
+        $_CONTENT$
+        $_RIGHT$
+    </div>
+    $_FOOTER$
+</div>
+$_SCRIPT$

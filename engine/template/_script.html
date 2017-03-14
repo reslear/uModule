@@ -1,2 +1,22 @@
+<script>this.Page = {module:'$PAGE_MODULE_NAME$', id:'$PAGE_MODULE_ID$'};</script>
 
-<!-- скрипты -->
+<script>
+    var menuItems = document.querySelectorAll('.menu-items a');
+
+    // add events
+    [].forEach.call(menuItems, function(item) {
+        item.onclick = changeActive;
+    });
+
+    function changeActive(e){
+
+//        e.preventDefault();
+
+        [].forEach.call(menuItems, function(item) {
+            item.classList.remove('active','animate');
+        });
+
+        this.classList.add('active','animate');
+    }
+
+</script>
