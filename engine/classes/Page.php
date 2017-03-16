@@ -85,7 +85,7 @@
             return $array;
         }
 
-        private function includeClousure($page) {
+        private function includeClousure($page, $template_array) {
             return (include $page['handler']);
         }
 
@@ -121,27 +121,30 @@
             $template_url = $option['patch'].$page['template'];
             if( !file_exists($template_url) ) return $this->error_404();
 
-            // handler
-            $return_array = isset($page['arr']) ? $page['arr'] : $this->includeClousure($page);
-            if( !$return_array ) {
-                return $this->error_404();
-            }
+            $template_array = array();
 
             // добавляем глобальные переменные
             $user_array = $this->parse_user_variable($option['global']);
-            $return_array = array_merge($user_array, $return_array);
-
+            $template_array = array_merge($user_array, $template_array);
 
             // работа с глобальными блоками
-            $globals_array = $this->get_g_template(array('array' => $return_array));
-            $return_array = array_merge($return_array,  $globals_array);
+            $globals_array = $this->get_g_template(array('array' => $template_array));
+            $template_array = array_merge($template_array,  $globals_array);
+
+            // handler
+            $include = isset($page['arr']) ? $page['arr'] : $this->includeClousure($page, $template_array);
+
+            if( !$template_array ){return $this->error_404();}
+            $template_array = array_merge($template_array,  $include);
 
             // append скрипты
+            /*
             $append = isset($return_array['append']) ? $return_array['append'] : array();
             if( isset($append) ) {
                 if( is_array($append) ) {
                     foreach($append as $key => $value) {
 
+                        $key = strtoupper($key);
                         if( !isset($return_array[$key]) || !is_array($value) ) continue;
 
                         foreach( $value as $arr_value) {
@@ -153,9 +156,9 @@
 
                 unset($return_array['append']);
             }
+              */
 
-            print_r($return_array);
-            //return $this->template->file($template_url,  $return_array);
+            return $this->template->file($template_url, $template_array);
         }
     }
 

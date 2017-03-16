@@ -20,7 +20,8 @@
             $result = ob_get_clean();
 
             if( strpos($result, 'error') !== false ) {
-                user_error("Ошибка, при парсе условия \"$condition\"");
+                // echo "<b>$condition</b>";
+                user_error("Ошибка, при обработке условия. Пропущено.");
                 return false;
             } else {
                 return $result;
@@ -36,8 +37,22 @@
             return $result ? $block[0] : ( isset($block[1]) ? $block[1] : '');
         }
 
-        public function check_var( $matches ) {
-            return isset($this->array[$matches[1]]) ? '$this->array["'.$matches[1].'"]' : '';
+        public function replace_on_thisvar( $matches ) {
+            $var_name = strtoupper($matches[1]);
+            return isset( $this->array[$var_name] ) ? '$this->array["'.$var_name.'"]' : ($this->no_remove_empty_var ? $var_name : '');
+        }
+
+        public function diff_user_array( $user_array ) {
+
+            $array = array();
+
+            foreach($array as $key => $value ) {
+
+                $key = strtoupper($key);
+                $array[$key] = $value;
+            }
+
+            return $array;
         }
 
         private function parseBlocksRecursive( $template ) {
@@ -63,15 +78,19 @@
 
         }
 
-        private function init( $source, $array ){
 
-            $this->array = $array;
+        public function text( $source, $array = array(), $no_remove_empty_var = false ) {
 
-            $html = preg_replace_callback('/\$(.+?)\$/', array($this, 'check_var'), $source);
+            $this->no_remove_empty_var = $no_remove_empty_var;
+            $this->array = $this->diff_user_array($array);
+
+            $html = preg_replace_callback('/\$(.+?)\$/', array($this, 'replace_on_thisvar'), $source);
             $output = $this->parseBlocksRecursive( $html );
 
             foreach( $this->array as $key => $value ) {
+
                 if( is_array($value) ){
+//                    print_r($value);
                     user_error('Внимание! Переменная передана в виде массива. Пропуск.');
                     // TODO: Записать переменную в файл лога (в связи с безопасностью);
                 } else {
@@ -85,20 +104,16 @@
 
 
         /* pub */
-        public function file( $file_patch, $array = array() ){
+        public function file( $file_patch, $array, $no_remove_empty_var = false){
 
             if( is_file($file_patch) ) {
 
                 $source = file_get_contents($file_patch);
-                return $this->init($source, $array);
+                return $this->text($source, $array, $no_remove_empty_var);
             } else {
 
                 user_error("Ошибка: отсутствует файл \"$file_patch\".");
             }
-        }
-
-        public function text( $source, $array = array() ){
-            return $this->init($source, $array);
         }
 
     }

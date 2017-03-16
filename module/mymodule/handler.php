@@ -28,9 +28,9 @@
 
             $page_array['TITLE'] = 'Добавление нового '.$page_array['PAGE_MODULE_TITLE'];
             $page_array['CONTENT'] = 'Шаблон добавления '.$page_array['PAGE_MODULE_TITLE'];
-            $page_array['append']['_script'][] = '<script></script>';
-            $page_array['append']['_script'][] = '<script></script>';
-            $page_array['append']['_head'] = '<script></script>';  
+            
+            $template_array['_SCRIPT'] .= '<script></script>';
+            $template_array['_SCRIPT'] .= '<script></script>';
 
         } else {
 
