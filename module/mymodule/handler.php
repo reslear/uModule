@@ -28,6 +28,9 @@
 
             $page_array['TITLE'] = 'Добавление нового '.$page_array['PAGE_MODULE_TITLE'];
             $page_array['CONTENT'] = 'Шаблон добавления '.$page_array['PAGE_MODULE_TITLE'];
+            $page_array['append']['_script'][] = '<script></script>';
+            $page_array['append']['_script'][] = '<script></script>';
+            $page_array['append']['_head'] = '<script></script>';  
 
         } else {
 
@@ -52,7 +55,7 @@
 
     } else {
 
-        ### Если вывод всех 
+        ### Если вывод всех
 
         $page_array['TITLE'] = 'Все';
         $page_array['CONTENT'] =  'Шаблон всех материалов модуля '.$page_array['PAGE_MODULE_TITLE'];

@@ -138,13 +138,26 @@
 
             // append скрипты
             $append = isset($return_array['append']) ? $return_array['append'] : array();
-            if( isset($append) && is_array($append) ) {
-                foreach($append as $key => $value) {
-                    $return_array[$key] .= $value;
+            if( isset($append) ) {
+                if( is_array($append) ) {
+                    foreach($append as $key => $value) {
+
+                        if( !isset($return_array[$key]) || !is_array($value) ) continue;
+
+                        foreach( $value as $arr_value) {
+                            $return_array[$key] .= $arr_value;
+                        }
+
+                    }
                 }
+
+                unset($return_array['append']);
+//                $return_array = array_diff_key($return_array, array('append'));
+//                unset($return_array['append']);
             }
 
-            return $this->template->file($template_url,  $return_array);
+            print_r($return_array);
+            //return $this->template->file($template_url,  $return_array);
         }
     }
 

@@ -65,7 +65,12 @@
             $output = $this->parseBlocksRecursive( $html );
 
             foreach( $this->array as $key => $value ) {
-                $output = str_replace( '$this->array["'.$key.'"]', $value, $output);
+                if( is_array($value) ){
+                    user_error('Внимание! Переменная передана в виде массива. Пропуск.');
+                    // TODO: Записать переменную в файл лога (в связи с безопасностью);
+                } else {
+                    $output = str_replace( '$this->array["'.$key.'"]', $value, $output);
+                }
             }
 
             return $output;
