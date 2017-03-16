@@ -43,7 +43,7 @@ function array_extend($a, $b) {
             'handler'  => 'module/mymodule/_main/handler.php'
         ),
         'article_id' => array(
-            'regex'    => '/^(article|script)(?:\/|\/(\d+))?$/',
+            'regex'    => '/^(article|script)(?:\/|\/(\d+|add))?(?:\/)?(edit|)?$/',
             'handler'  => 'module/mymodule/handler.php'
         ),
     );

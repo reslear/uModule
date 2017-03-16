@@ -136,6 +136,14 @@
             $globals_array = $this->get_g_template(array('array' => $return_array));
             $return_array = array_merge($return_array,  $globals_array);
 
+            // append скрипты
+            $append = isset($return_array['append']) ? $return_array['append'] : array();
+            if( isset($append) && is_array($append) ) {
+                foreach($append as $key => $value) {
+                    $return_array[$key] .= $value;
+                }
+            }
+
             return $this->template->file($template_url,  $return_array);
         }
     }
