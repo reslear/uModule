@@ -8,7 +8,7 @@
 
     define('uphp', true);
 
-    include_once 'engine/classes/Template.php';
+    include_once 'engine/classes/CavusParser.php';
     include_once 'engine/classes/Page.php';
 
 function array_extend($a, $b) {

@@ -1,9 +1,15 @@
 <?php
 
-    //s
+    /*!
+        CavusParser (Conditions And Variables Ucoz Style Parser) v0.1 release
+        (c) 2016 Korchevskiy Evgeniy (aka ReSLeaR-)
+        ---
+        vk.com/reslear | upost.su | github.com/reslear
+        Released under the MIT @license.
+    !*/
 
 
-    class Template {
+    class CavusParser {
 
         public $array;
 
@@ -97,47 +103,4 @@
 
     }
 
-/* OLDDDDDDD
-
-    class Template {
-
-        public $array;
-        public $template;
-
-        public function init( $file, $array ) {
-
-            $file = implode( '', file( $file ) );
-            $this->array = $array;
-
-            $template_file = preg_replace_callback('/\$(.+?)\$/', array($this, 'check_var'), $file);
-            $template_file = preg_replace_callback('/<\?if\((.+?)\)\?>(.*?)<\?endif\?>/su', array($this, 'check'), $template_file);
-
-            foreach( $this->array as $key => $value ) {
-                $template_file = str_replace( '$this->array["'.$key.'"]', $value, $template_file);
-            }
-
-            $template_file = preg_replace('/<\?if\((.+?)\)\?>(.*?)<\?endif\?>/su', '', $template_file);
-
-            return $template_file;
-
-        }
-
-        public function check( $matches ) {
-
-            $matches[1] = trim( $matches[1] );
-
-            if( isset($matches[1]) && $matches[1] !='' ) {
-                $else = explode( '<?else?>', $matches[2] );
-                return @eval('return '.$matches[1].';') ? $else[0] : $else[1];
-            }
-
-        }
-
-        public function check_var( $matches) {
-            return isset($this->array[$matches[1]]) ? '$this->array["'.$matches[1].'"]' : '';
-        }
-
-    }
-
-*/
 ?>

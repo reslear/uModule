@@ -10,9 +10,9 @@
 
         function __construct( $default ) {
 
-            if( !class_exists('Template', false) ) return user_error("Класс \"Template\" не объявлен. Выход.");
+            if( !class_exists('CavusParser', false) ) return user_error("Класс \"CavusParser\" не объявлен. Выход.");
 
-            $this->template = new Template();
+            $this->template = new CavusParser();
 
             // дефольтные значения
             $this->option = array_merge(array(
@@ -152,8 +152,6 @@
                 }
 
                 unset($return_array['append']);
-//                $return_array = array_diff_key($return_array, array('append'));
-//                unset($return_array['append']);
             }
 
             print_r($return_array);
