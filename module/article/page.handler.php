@@ -17,8 +17,12 @@
     $page_array = array(
         'PAGE_MODULE_NAME'  => $___module_name,
         'PAGE_MODULE_TITLE' => $___module_name == 'article' ? 'Статья' : ($___module_name == 'script' ? 'Cкрипт' : ''),
-        'PAGE_MODULE_ID'    => $___module_id
+        'PAGE_MODULE_ID'    => $___module_id,
+        'PAGE_MODULE_URI'   => $___is_edit,
     );
+
+    // добавлем скрипт
+    $page_array['append']['_script'][] = file_get_contents('module/article/template/script.html');
 
     // если передан id
     if( $___module_id ) {
@@ -27,10 +31,9 @@
         if( $___is_add ){
 
             $page_array['TITLE'] = 'Добавление нового '.$page_array['PAGE_MODULE_TITLE'];
-            $page_array['CONTENT'] = 'Шаблон добавления '.$page_array['PAGE_MODULE_TITLE'];
-            
-            $template_array['_SCRIPT'] .= '<script></script>';
-            $template_array['_SCRIPT'] .= '<script></script>';
+            $page_array['CONTENT'] = file_get_contents('module/article/template/add.html');
+
+            $page_array['append']['_head'][] = '<!-- google captha <script src=""></script> -->';
 
         } else {
 

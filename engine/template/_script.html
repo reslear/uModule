@@ -1,5 +1,23 @@
 
 <script>
+function post(url, data, cb, cbe) {
+
+    var request = new XMLHttpRequest();
+    request.open('POST', url, true);
+    request.send(data);
+
+    request.onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+            if(cb) cb.call(this, this.response);
+        } else {
+            if(cbe) cbe.call(this);
+        }
+    };
+}
+</script>
+
+
+<script>
     var menuItems = document.querySelectorAll('.menu-items a');
 
     // add events

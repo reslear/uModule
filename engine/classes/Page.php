@@ -55,7 +55,7 @@
         public function error_404() {
             header("HTTP/1.1 404 Not Found");
             $array = $this->parse_user_variable( $this->option['global'] );
-            return $this->template ? $this->template->file($this->option['page404'], $array ) : '';
+            return $this->template ? $this->template->parse($this->option['page404'], $array ) : '';
         }
 
         public function get_g_template( $default ) {
@@ -76,7 +76,7 @@
 
                 if( $filename ) {
                     $name = pathinfo($filename);
-                    $document = $this->template->file($filename,  $option['array']);
+                    $document = $this->template->parse($filename,  $option['array']);
 
                     $array[strtoupper($name['filename'])] = $document;
                 }
@@ -85,7 +85,7 @@
             return $array;
         }
 
-        private function includeClousure($page, $template_array) {
+        private function includeClousure($page) {
             return (include $page['handler']);
         }
 
@@ -121,44 +121,42 @@
             $template_url = $option['patch'].$page['template'];
             if( !file_exists($template_url) ) return $this->error_404();
 
-            $template_array = array();
+            $template_array = array('PAGE_MODULE_NAME'=>'main');
+
+            // handler
+            $include = isset($page['arr']) ? $page['arr'] : $this->includeClousure($page);
+            if( !$include ){return $this->error_404();}
+            $template_array = array_merge($template_array,  $include);
 
             // добавляем глобальные переменные
             $user_array = $this->parse_user_variable($option['global']);
-            $template_array = array_merge($user_array, $template_array);
+            $template_array = array_merge($template_array, $user_array);
 
             // работа с глобальными блоками
-            $globals_array = $this->get_g_template(array('array' => $template_array));
-            $template_array = array_merge($template_array,  $globals_array);
+            $g_template_array = $this->get_g_template(array('array' => $template_array));
+            $template_array = array_merge($template_array,  $g_template_array);
 
-            // handler
-            $include = isset($page['arr']) ? $page['arr'] : $this->includeClousure($page, $template_array);
-
-            if( !$template_array ){return $this->error_404();}
-            $template_array = array_merge($template_array,  $include);
 
             // append скрипты
-            /*
-            $append = isset($return_array['append']) ? $return_array['append'] : array();
+            $append = isset($template_array['append']) ? $template_array['append'] : array();
             if( isset($append) ) {
                 if( is_array($append) ) {
                     foreach($append as $key => $value) {
 
-                        $key = strtoupper($key);
-                        if( !isset($return_array[$key]) || !is_array($value) ) continue;
+                        $key = strtoupper($key);    
+
+                        if( !isset($template_array[$key]) || !is_array($value) ) continue;
 
                         foreach( $value as $arr_value) {
-                            $return_array[$key] .= $arr_value;
+                            $template_array[$key] .= $arr_value;
                         }
 
                     }
                 }
-
-                unset($return_array['append']);
+                unset($template_array['append']);
             }
-              */
 
-            return $this->template->file($template_url, $template_array);
+            return $this->template->parse($template_url, $template_array);
         }
     }
 

@@ -33,18 +33,17 @@ function array_extend($a, $b) {
         ),
         'PAGE' => array(
             'MAIN_URL' => '/php/'.$_REQUEST["___scriptdir"].$_REQUEST["___script"].'?u=',
-            'MODULE_NAME' => 'main'
         )
     );
 
 
     $table = array(
         'main' => array(
-            'handler'  => 'module/mymodule/_main/handler.php'
+            'handler'  => 'engine/template/main_handler.php'
         ),
         'article_id' => array(
             'regex'    => '/^(article|script)(?:\/|\/(\d+|add))?(?:\/)?(edit|)?$/',
-            'handler'  => 'module/mymodule/handler.php'
+            'handler'  => 'module/article/page.handler.php'
         ),
     );
 

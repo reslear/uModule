@@ -15,14 +15,17 @@
 
         public function runCondition( $condition ) {
 
+
             ob_start();
             echo eval("return $condition;");
             $result = ob_get_clean();
 
             if( strpos($result, 'error') !== false ) {
-                // echo "<b>$condition</b>";
-                user_error("Ошибка, при обработке условия. Пропущено.");
-                return false;
+
+                //echo "<b>$condition</b>";
+                //user_error("Ошибка, при обработке условия. Пропущено.");
+
+                return 'error';
             } else {
                 return $result;
             }
@@ -32,21 +35,24 @@
         public function checkCondition( $condition, $content ) {
 
             $result = $this->runCondition( $condition );
-            $block = explode( '<?else?>', $content );
 
+            // если ошибка, возращаем пустой контент
+            if( $result === 'error') {return $content;}
+
+            $block = explode( '<?else?>', $content );
             return $result ? $block[0] : ( isset($block[1]) ? $block[1] : '');
         }
 
         public function replace_on_thisvar( $matches ) {
             $var_name = strtoupper($matches[1]);
-            return isset( $this->array[$var_name] ) ? '$this->array["'.$var_name.'"]' : ($this->no_remove_empty_var ? $var_name : '');
+            return isset( $this->array[$var_name] ) ? '$this->array["'.$var_name.'"]' : ($this->remove_empty_var ? '' : $matches[0]);
         }
 
         public function diff_user_array( $user_array ) {
 
             $array = array();
 
-            foreach($array as $key => $value ) {
+            foreach($user_array as $key => $value ) {
 
                 $key = strtoupper($key);
                 $array[$key] = $value;
@@ -79,9 +85,15 @@
         }
 
 
-        public function text( $source, $array = array(), $no_remove_empty_var = false ) {
+        public function parse( $source, $array = array(), $remove_empty_var = true ) {
 
-            $this->no_remove_empty_var = $no_remove_empty_var;
+            // если файл
+            if( strlen($source) <= 100 && is_file($source) ) {
+                $source = file_get_contents($source);
+            }
+
+
+            $this->remove_empty_var = $remove_empty_var;
             $this->array = $this->diff_user_array($array);
 
             $html = preg_replace_callback('/\$(.+?)\$/', array($this, 'replace_on_thisvar'), $source);
@@ -89,31 +101,11 @@
 
             foreach( $this->array as $key => $value ) {
 
-                if( is_array($value) ){
-//                    print_r($value);
-                    user_error('Внимание! Переменная передана в виде массива. Пропуск.');
-                    // TODO: Записать переменную в файл лога (в связи с безопасностью);
-                } else {
-                    $output = str_replace( '$this->array["'.$key.'"]', $value, $output);
-                }
+                if( is_array($value) ) continue;
+                $output = str_replace( '$this->array["'.$key.'"]', $value, $output);
             }
 
             return $output;
-        }
-
-
-
-        /* pub */
-        public function file( $file_patch, $array, $no_remove_empty_var = false){
-
-            if( is_file($file_patch) ) {
-
-                $source = file_get_contents($file_patch);
-                return $this->text($source, $array, $no_remove_empty_var);
-            } else {
-
-                user_error("Ошибка: отсутствует файл \"$file_patch\".");
-            }
         }
 
     }

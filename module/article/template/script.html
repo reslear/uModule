@@ -1,0 +1,36 @@
+<script>
+var Article = (function() {
+
+    var form = document.querySelector('#article-add');
+
+    var events = {
+        submit: function(e) {
+            e.preventDefault();
+            publicMethods.post();
+        }
+    }
+
+
+    var publicMethods = {
+        init: function(){
+
+            if( window.Page.id === 'add' ) {
+                form.addEventListener('submit', events.submit);
+            }
+
+        },
+        post : function() {
+            var formData = new FormData(form);
+            post('/php/u.php?m=article', formData, function( resp ){
+                console.log(this);
+            }, function() {
+                console.log(this);
+            });
+        }
+    };
+
+    return publicMethods;
+})();
+
+Article.init();
+</script>
