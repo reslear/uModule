@@ -10,7 +10,7 @@ class User {
     public $db;
 
     function __construct() {
-        $this->db = new Database('data/databases/userbase.db', 'users', $this->constArray(array(
+        $this->db = new Database('engine/database/userbase.db', 'users', $this->constArray(array(
             'INTEGER PRIMARY KEY NOT NULL',
             'varchar(255) NOT NULL',
             'varchar(255) NOT NULL',

@@ -2,7 +2,8 @@
 
     return array(
         'TITLE' => 'uPost.su - Главная',
-        'CONTENT' => $this->template->parse('engine/template/main_content.html')
+        'CONTENT' => $this->template->parse('engine/template/main_content.html'),
+        'PAGE_NAME' => 'main'
     );
 
 ?>

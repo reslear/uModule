@@ -76,10 +76,20 @@
 
                 if( $filename ) {
                     $name = pathinfo($filename);
-                    $document = $this->template->parse($filename,  $option['array']);
+                    $document = file_get_contents($filename);
 
                     $array[strtoupper($name['filename'])] = $document;
                 }
+            }
+
+            return $array;
+        }
+
+        public function parse_g_template( $array ) {
+
+            foreach( $array as $key => $line) {
+                $document = $this->template->parse($line,  $array);
+                $array[$key] = $document;
             }
 
             return $array;
@@ -102,6 +112,17 @@
             return $output;
         }
 
+        public function search_module_in_array( $array ) {
+
+
+            $source = implode('', $array);
+            preg_match_all('/\$MODULE\_(.+?)\$/sm', $source, $output_array);
+
+            // удаляем дубликаты
+            $modules = array_unique($output_array[1]);
+
+            return $modules;
+        }
 
         public function init( $default = array() ) {
 
@@ -121,7 +142,7 @@
             $template_url = $option['patch'].$page['template'];
             if( !file_exists($template_url) ) return $this->error_404();
 
-            $template_array = array('PAGE_MODULE_NAME'=>'main');
+            $template_array = array('PAGE_MODULE_NAME'=>'');
 
             // handler
             $include = isset($page['arr']) ? $page['arr'] : $this->includeClousure($page);
@@ -132,10 +153,22 @@
             $user_array = $this->parse_user_variable($option['global']);
             $template_array = array_merge($template_array, $user_array);
 
-            // работа с глобальными блоками
+            // получаем глобальные блоки
             $g_template_array = $this->get_g_template(array('array' => $template_array));
             $template_array = array_merge($template_array,  $g_template_array);
 
+            // подгрузка модулей
+            $modules_array = $this->search_module_in_array($template_array);
+            $module = new Module();
+              print_r($modules_array);
+            $modules_return = $module->load($modules_array);
+            print_r($modules_return);
+            $template_array = array_merge($template_array,  $modules_return);
+
+
+            // парсим глобальные блоки
+            $parse_g_template = $this->parse_g_template($g_template_array);
+            $template_array = array_merge($template_array,  $parse_g_template);
 
             // append скрипты
             $append = isset($template_array['append']) ? $template_array['append'] : array();
@@ -143,7 +176,7 @@
                 if( is_array($append) ) {
                     foreach($append as $key => $value) {
 
-                        $key = strtoupper($key);    
+                        $key = strtoupper($key);
 
                         if( !isset($template_array[$key]) || !is_array($value) ) continue;
 

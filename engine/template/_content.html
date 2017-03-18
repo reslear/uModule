@@ -1,4 +1,15 @@
 <div class="global-content" id="content">
+    <header>
+        <nav class="breadcrumbs">
+            <ul>
+                <li><a href="$PAGE_MAIN_URL$" title="">Главная</a></li>
+                <?if($PAGE_MODULE_NAME$)?><li><a href="$PAGE_MAIN_URL$$PAGE_MODULE_NAME$" title="">$PAGE_MODULE_NAME$</a></li><?endif?>
+                <?if($PAGE_MODULE_ID$)?><li><a href="$PAGE_MAIN_URL$$PAGE_MODULE_NAME$/$PAGE_MODULE_ID$" title="">$PAGE_MODULE_ID$</a></li><?endif?>
+                <?if($PAGE_MODULE_URI$)?><li><a href="$PAGE_MAIN_URL$$PAGE_MODULE_NAME$/$PAGE_MODULE_URI$" title="">$PAGE_MODULE_URI$</a></li><?endif?>
+
+            </ul>
+            <a href="$PAGE_MAIN_URL$<?if($PAGE_MODULE_NAME$)?>$PAGE_MODULE_NAME$<?else?>article<?endif?>/add">Добавить $PAGE_MODULE_NAME$</a>
+        </nav>
+    </header>
     $CONTENT$
 </div>
-

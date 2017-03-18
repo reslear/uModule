@@ -1,8 +1,17 @@
-
-<script>this.Page = {module:'$PAGE_MODULE_NAME$', id:'$PAGE_MODULE_ID$', uri:'$PAGE_MODULE_URI$'};</script>
+<!--р-->
+<script>
+var Page = {
+    name:'$PAGE_NAME$',
+    module:'$PAGE_MODULE_NAME$',
+    id:'$PAGE_MODULE_ID$',
+    uri:'$PAGE_MODULE_URI$',
+    myuser: {
+        id: $MY_USER_ID$
+    }
+};</script>
 
 <script>
 /* MiniCache v1.0 | (c) 2016 by ReSLeaR- | upost.su | vk.com/reslear */
 var initCache=function(){function e(e){var r=miniCache[0];e&&(r.cache=e),i(r)&&(miniCache.splice(0,1),miniCache.length&&n())}function n(i){if(i){var t=miniCache.length;return miniCache.push(i),!!t||n()}if(miniCache.length){var i=miniCache[0];return i.cache?e():r(i)}}function i(e){var n=e.url.indexOf(".js")!=-1,i=document.createElement(n?"script":e.cache?"style":"link");e.cache?i.innerHTML=e.cache:n?i.src=e.url:(i.href=e.url,i.rel="stylesheet"),i.setAttribute("cachefile",e.url);var r=document.head.querySelectorAll("[cachefile]");return r=r[r.length-1],r?document.head.insertBefore(i,r.nextSibling):document.head.insertBefore(i,document.head.firstChild),e.fx&&e.fx.call(this),!0}function r(n){var i=new XMLHttpRequest;i.open("GET",n.url,!0),i.onload=function(){if(this.status>=200&&this.status<400){var i=this.responseText;localStorage.setItem(n.url,i),e(i)}else e()},i.onerror=function(){e()},i.send()}window.miniCache=window.miniCache||[];for(var t=0,c=arguments.length;t<c;t++){var a=Array.isArray(arguments[t])?arguments[t][0]:arguments[t],h=(localStorage[a]||"").trim(),l={url:a};h&&(l.cache=h),Array.isArray(arguments[t])&&(l.fx=arguments[t][1]),n(l)}};
-initCache("/design/css/main.min.css?0","/design/css/sprite.min.css?0","/design/css/fonts.css?0");
+initCache("/design/css/main.min.css?4","/design/css/sprite.min.css?0","/design/css/fonts.css?0");
 </script>

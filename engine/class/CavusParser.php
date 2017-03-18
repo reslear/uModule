@@ -25,7 +25,7 @@
                 //echo "<b>$condition</b>";
                 //user_error("Ошибка, при обработке условия. Пропущено.");
 
-                return 'error';
+                return false;
             } else {
                 return $result;
             }
@@ -36,9 +36,6 @@
 
             $result = $this->runCondition( $condition );
 
-            // если ошибка, возращаем пустой контент
-            if( $result === 'error') {return $content;}
-
             $block = explode( '<?else?>', $content );
             return $result ? $block[0] : ( isset($block[1]) ? $block[1] : '');
         }
@@ -46,6 +43,17 @@
         public function replace_on_thisvar( $matches ) {
             $var_name = strtoupper($matches[1]);
             return isset( $this->array[$var_name] ) ? '$this->array["'.$var_name.'"]' : ($this->remove_empty_var ? '' : $matches[0]);
+        }
+
+        public function replace_this_tovar( $output ) {
+
+            foreach( $this->array as $key => $value ) {
+
+                if( is_array($value) ) continue;
+                $output = str_replace( '$this->array["'.$key.'"]', $value, $output);
+            }
+
+            return $output;
         }
 
         public function diff_user_array( $user_array ) {
@@ -99,11 +107,7 @@
             $html = preg_replace_callback('/\$(.+?)\$/', array($this, 'replace_on_thisvar'), $source);
             $output = $this->parseBlocksRecursive( $html );
 
-            foreach( $this->array as $key => $value ) {
-
-                if( is_array($value) ) continue;
-                $output = str_replace( '$this->array["'.$key.'"]', $value, $output);
-            }
+            $output = $this->replace_this_tovar($output);
 
             return $output;
         }

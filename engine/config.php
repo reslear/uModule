@@ -9,7 +9,8 @@
         'echoError' => true,
         'domain'    => 'http://upost.su',
         'admin'     => array(3,4),
-        'noavatar'  => '/avatar/noava.png'
+        'noavatar'  => '/avatar/noava.png',
+        'site_off'  => true
     );
 
 ?>

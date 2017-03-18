@@ -2,11 +2,8 @@
 
     if(!defined('uphp')) exit;
 
-    // подгружаем конфиг
-    include 'data/config.php';
-
     // подгружаем функции
-    include 'data/functions.php';
+    include 'engine/function.php';
 
 
 
@@ -14,35 +11,42 @@
     ------------------------------------------------------------------------------------*/
 
     // подгружаем класс работы с CURL
-    include 'data/classes/Curl.php';
+    include 'engine/class/Curl.php';
 
     // подгружаем класс работы с базой данных
-    include 'data/classes/Database.php';
+    include 'engine/class/Database.php';
 
     // подгружаем класс работы с пользователями
-    include 'data/classes/User.php';
+    include 'engine/class/User.php';
 
     // подгружаем класс работы с шаблонами
-    include 'data/classes/Template.php';
+    include 'engine/class/CavusParser.php';
 
+    // подгружаем класс Module
+    include 'engine/class/Module.php';
+
+    // подгружаем класс Page
+    include 'engine/class/Page.php';
 
 
     /*  Плагины
     ------------------------------------------------------------------------------------*/
 
     // подгружаем данные текущего пользователя
-    include 'data/user_vars.php';
+    include 'engine/user_var.php';
 
     // подгружаем плагины
-    foreach (glob("data/plugins/*.php") as $filename) {
-        include $filename;
+    $files = glob("engine/plugin/*.php");
+    for( $i = 0; $i < count($files); $i++ ) {
+        $filename = $files[$i];
+        if($filename) include $filename;
     }
 
 
 
     /*  комманды
     ------------------------------------------------------------------------------------*/
-    include 'data/comands.php';
+    include 'engine/comand.php';
 
 
 ?>

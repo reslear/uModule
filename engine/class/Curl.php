@@ -12,7 +12,7 @@ class Curl {
     function __construct( $url ) {
 
         $this->ch = curl_init();
-        $file = "data/cookies.txt";
+        $file = "engine/database/cookies.txt";
 
         $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
 

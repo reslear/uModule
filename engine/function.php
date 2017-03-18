@@ -3,6 +3,21 @@
 //    if(!defined('uphp')) exit;
 
 
+    function array_extend($a, $b) {
+        foreach($b as $k=>$v) {
+            if( is_array($v) ) {
+                if( !isset($a[$k]) ) {
+                    $a[$k] = $v;
+                } else {
+                    $a[$k] = array_extend($a[$k], $v);
+                }
+            } else {
+                $a[$k] = $v;
+            }
+        }
+        return $a;
+    }
+
     /* Функции для работы с файлами
     ================================================================================== */
 
@@ -140,7 +155,7 @@
 
         if( strpos($headers['content_type'], 'xml') === false ) {
 
-            user_error('GetApi error - (Возможно отключён API) - получен не xml - '.$apiurl);
+            user_error('GetApi error - (Возможно отключён сайт или API) - получен не xml - '.$apiurl);
             return false;
         } else {
             $array = xmlrpc_decode($data, 'utf8');
