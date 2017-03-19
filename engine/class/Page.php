@@ -85,10 +85,10 @@
             return $array;
         }
 
-        public function parse_g_template( $array ) {
+        public function parse_g_template( $array, $template_array ) {
 
             foreach( $array as $key => $line) {
-                $document = $this->template->parse($line,  $array);
+                $document = $this->template->parse($line,  $template_array);
                 $array[$key] = $document;
             }
 
@@ -160,14 +160,13 @@
             // подгрузка модулей
             $modules_array = $this->search_module_in_array($template_array);
             $module = new Module();
-              print_r($modules_array);
-            $modules_return = $module->load($modules_array);
-            print_r($modules_return);
-            $template_array = array_merge($template_array,  $modules_return);
 
+            $modules_return = $module->load($modules_array, 'MODULE_');
+            $template_array = array_merge($template_array,  $modules_return);
+            
 
             // парсим глобальные блоки
-            $parse_g_template = $this->parse_g_template($g_template_array);
+            $parse_g_template = $this->parse_g_template($g_template_array, $template_array);
             $template_array = array_merge($template_array,  $parse_g_template);
 
             // append скрипты
