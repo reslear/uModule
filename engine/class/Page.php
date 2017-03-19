@@ -13,6 +13,7 @@
             if( !class_exists('CavusParser', false) ) return user_error("Класс \"CavusParser\" не объявлен. Выход.");
 
             $this->template = new CavusParser();
+            $this->module = new Module();
 
             // дефольтные значения
             $this->option = array_merge(array(
@@ -95,7 +96,7 @@
             return $array;
         }
 
-        private function includeClousure($page) {
+        private function includeClousure($page, $global_array) {
             return (include $page['handler']);
         }
 
@@ -144,14 +145,14 @@
 
             $template_array = array('PAGE_MODULE_NAME'=>'');
 
-            // handler
-            $include = isset($page['arr']) ? $page['arr'] : $this->includeClousure($page);
-            if( !$include ){return $this->error_404();}
-            $template_array = array_merge($template_array,  $include);
-
             // добавляем глобальные переменные
             $user_array = $this->parse_user_variable($option['global']);
             $template_array = array_merge($template_array, $user_array);
+
+            // handler
+            $include = isset($page['arr']) ? $page['arr'] : $this->includeClousure($page, $user_array);
+            if( !$include ){return $this->error_404();}
+            $template_array = array_merge($template_array,  $include);
 
             // получаем глобальные блоки
             $g_template_array = $this->get_g_template(array('array' => $template_array));
@@ -159,11 +160,10 @@
 
             // подгрузка модулей
             $modules_array = $this->search_module_in_array($template_array);
-            $module = new Module();
 
-            $modules_return = $module->load($modules_array, 'MODULE_');
+            $modules_return = $this->module->load($modules_array, 'MODULE_');
             $template_array = array_merge($template_array,  $modules_return);
-            
+
 
             // парсим глобальные блоки
             $parse_g_template = $this->parse_g_template($g_template_array, $template_array);
@@ -188,6 +188,7 @@
                 unset($template_array['append']);
             }
 
+            header('HTTP/1.1 200 OK', true, 200);
             return $this->template->parse($template_url, $template_array);
         }
     }

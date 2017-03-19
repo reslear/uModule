@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 
 
@@ -10,6 +10,7 @@
         if( isset($_REQUEST['error']) ) {
             echo '<pre>'.print_r($return, true).'</pre>';
         } else {
+            header( "HTTP/1.1 200 OK" );
             header('Content-Type: application/json; charset=utf-8');
 
             $return = clear_rnts($return);

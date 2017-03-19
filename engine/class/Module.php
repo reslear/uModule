@@ -1,12 +1,12 @@
-﻿<?php
-
+<?php
+// fdsfd аа
 class Module {
 
     function ___construct(){
 
     }
 
-    public function load($___modules, $___isEcho) {
+    public function load($___modules, $___isEcho = '', $native_request = array() ) {
 
         $return = array();
 
@@ -17,6 +17,13 @@ class Module {
 
             $___index  = $___folder.'index.php';
             $___templates  = $___folder.'/templates/';
+
+            if( !empty($native_request) ){
+                 // name => value
+                foreach($native_request as $name => $value) {
+                    $_GET[$name] = $value;
+                }
+            }
 
             if( file_exists( $___index ) ) {
 
@@ -35,7 +42,7 @@ class Module {
 
                 ob_end_clean();
 
-                if( isset($___isEcho) ) {
+                if( !empty($___isEcho) ) {
                     $return[$___isEcho.$___module] = $source;
                 } else {
                     if( !isset($return[$___module]['source']) && isset($source) ) {

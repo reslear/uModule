@@ -2,8 +2,17 @@
 <div class="block">
     <h1>Добавление нового материала</h1>
     <form id="article-add">
+          Категория: <select name="cat" value="1">
+              <option disabled>- нет - </option>
+                <option value="1">Статьи</option>
+                <option value="2">Скрипты</option>
+          </select><br><br>
           Заголовок: <input type="text" name="title"><br><br>
-          Контент: <textarea name="content"></textarea><br>
+          Контент: <textarea name="text"></textarea><br>
+
+          <input type="hidden" name="type" value="add">
+          <input type="hidden" name="error" value="">
+
           <button type="">Добавить</button>
     </form>
 </div>

@@ -60,8 +60,10 @@
 
         ### Если вывод всех
 
+        $arr = $this->module->load(array('article'), '', array('type'=>'all','cat'=> $___module_name));
+
         $page_array['TITLE'] = 'Все';
-        $page_array['CONTENT'] =  'Шаблон всех материалов модуля '.$page_array['PAGE_MODULE_TITLE'];
+        $page_array['CONTENT'] = isset($arr['article']) ? $this->template->parse($arr['article']['source'], $global_array) : '';
     }
 
     return $page_array;
