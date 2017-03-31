@@ -11,7 +11,10 @@
         function __construct( $db_name, $table_name, $create_table = false ) {
 
             $this->PDO = new PDO('sqlite:'.$db_name);
-            $this->PDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
+
+            if( isset($_REQUEST['error'])) {
+                $this->PDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
+            }
 
             $this->table_name = $table_name;
 
