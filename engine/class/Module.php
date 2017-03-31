@@ -49,6 +49,12 @@ class Module {
                         $___return[$___module]['source'] = $source;
                     }
                 }
+
+/*
+                if( isset($_REQUEST['error']) && isset($___return[$___module]['debug']) && !empty($___return[$___module]['debug']) ) {
+                    echo $___return[$___module]['debug'];
+                }
+                */
             }
         }
 

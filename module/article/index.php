@@ -37,17 +37,19 @@
         }
 
 
-        public function creat_db_array( $user_array ) {
+        public function creat_db_array( $is_edit_id, $user_array ) {
+
+            if( !$user_array ) $user_array = $_POST;
 
             // выход если переменные пусты
             if( !F::check_isset_array( array('cat', 'text', 'title'), $user_array ) ){
                 return false;
             };
 
-            $cat_index = $this->search_cat_id(0, intval($user_array['cat']) );
+            $cat_index = $this->check_category('id', intval($user_array['cat']) );
 
             // Выход если передана категория не числом, или её нет в массиве
-            if( !F::has_int($user_array['cat']) || !$cat_index[0] ) {
+            if( !F::has_int($user_array['cat']) || !$cat_index ) {
                 return false;
             }
 
@@ -63,10 +65,39 @@
             return $array;
         }
 
-        private function db_init_write($array) {
-            $write_status = $this->db->write($array);
-            return $write_status;
+        private function db_init_write($array, $is_edit_id) {
+            if( $is_edit_id ) {
+
+                $array['id'] = $is_edit_id;
+                $update = $this->db->update('id', $array);
+
+                return $update ? $is_edit_id.' отредактировано' : 'не отредактировано';
+            }else{
+                $write_status = $this->db->write($array);
+                return $write_status ? 'готово' : 'не записано';
+            }
         }
+
+        public function write( $is_edit_id = false, $array = false) {
+
+            // создаём массив
+            $new_db_array = $this->creat_db_array($is_edit_id, $array);
+
+            if( !$new_db_array ) {
+                return 'Некоторые данные не валидны.';
+            }
+
+            // запись
+            $write = $this->db_init_write($new_db_array, $is_edit_id);
+            return $write;
+        }
+
+        public function edit($id) {
+
+            if(!F::has_int($id)) return false;
+            return $this->write($id);
+        }
+
 
 
 
@@ -126,21 +157,6 @@
             $select = sprintf($select_template, $options);
             return $select;
         }
-
-        public function write( $array) {
-
-            // создаём массив
-            $new_db_array = $this->creat_db_array($array);
-
-            if( !$new_db_array ) {
-                return 'Некоторые данные не валидны.';
-            }
-
-            // запись
-            $write = $this->db_init_write($new_db_array);
-            return $write ? print_r($new_db_array, true) : 'Ошибка, записи.';
-        }
-
 
 
 
@@ -246,6 +262,7 @@
             // если редактирование
             if( !$is_add ) {
                 if(!F::has_int($id)) return false;
+
                 $edit_array = $this->db->getOne('id = '.$id );
 
                 // Если статья не найдена
@@ -253,16 +270,16 @@
                     return false;
                 }
 
-                $cat = $edit_array['cat'];
+                $category_id = $edit_array['cat'];
             }
 
             if( $cat !== 0) {
                 $search = $this->check_category('name', $cat, '');
-                $cat = $search['id'];
+                $category_id = $search['id'];
             }
 
             $edit_array['ARTICLE_IS_EDIT'] = $is_add ? false : true;
-            $edit_array['ARTICLE_CATS'] = $this->print_category($cat);
+            $edit_array['ARTICLE_CATS'] = $this->print_category($category_id);
 
             $edit = $this->cavus->parse('module/article/template/add.html', $edit_array);
             return $edit;
@@ -309,7 +326,7 @@
             'uid' => array(1),
         ),
         'edit' => array(
-            'uid' => array(1),
+            'uid' => array(1, $uid),
         ),
     );
 
@@ -317,35 +334,60 @@
 
     /*  POST - запросы
     ----------------------------------------------------------------------------------*/
-    if( isset($_POST['type']) && $_POST['type'] == 'add' ) {
+    if( isset($_POST['type']) ) {
 
-        // права групп
-        $check_right = F::check_right( array($uid) );
+        $id = isset($_POST['id']) && F::has_int($_POST['id']) ? $_POST['id'] : false;
 
-        if( $check_right === true ) {
+        if( $_POST['type'] == 'edit' && $id ) {
 
-            $write_status = $article->write($_POST);
-            echo $write_status;
+            // права групп
+            $check_right = F::check_right($perm['edit']);
 
-        } else {
-            echo $check_right;
+            if( $check_right) {
+
+                $write_status = $article->edit($id);
+                echo $write_status;
+
+            } else {
+                echo 'запрещено вам редактировать';
+            }
+
         }
 
-    }
+        // удаление
+        if( $_POST['type'] == 'remove' && $id ) {
 
-    // удаление
-    if( isset($_POST['type']) && $_POST['type'] == 'remove' && isset($_POST['id']) && F::has_int($_POST['id']) ) {
+            // права групп
+            $check_right = F::check_right($perm['remove']);
 
-        // права групп
-        $check_right = F::check_right($uid);
+            if( $check_right) {
+                echo $article->remove($id);
+            } else {
+                echo 'запрещено вам удалять';
+            }
 
-        if( $check_right === true ) {
-            echo $article->remove($_POST['id']);
-        } else {
-            echo $check_right;
         }
 
+
+        if( $_POST['type'] == 'add' ) {
+
+            // права групп
+            $check_right = F::check_right($perm['add']);
+
+            if( $check_right) {
+
+                $write_status = $article->write();
+                echo $write_status;
+
+            } else {
+                echo 'запрещено вам добавлять';
+            }
+
+        }
     }
+
+
+
 
     /*  GET - запросы
     ----------------------------------------------------------------------------------*/

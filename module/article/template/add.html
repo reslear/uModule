@@ -28,9 +28,10 @@
                 </div>
             <?endif?>
 
+          <input type="hidden" name="id" value="$ID$">
           <input type="hidden" name="type" value="<?if($ARTICLE_IS_EDIT$)?>edit<?else?>add<?endif?>">
           <input type="hidden" name="error" value="">
 
-          <center><button type=""><?if($ARTICLE_IS_EDIT$)?>Изменить<?else?>Добавить<?endif?></button></center>
+          <center><button type="submit"><?if($ARTICLE_IS_EDIT$)?>Изменить<?else?>Добавить<?endif?></button></center>
     </form>
 </div>

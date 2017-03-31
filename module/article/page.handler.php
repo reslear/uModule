@@ -61,7 +61,7 @@
             ### если редактирование
             if($___is_edit) {
                 $page_array['TITLE'] = 'Редактирование '.$page_array['PAGE_MODULE_TITLE'].' '.$___module_id;
-                $page_array['CONTENT'] = $arr['article'] ? $arr['article'] : 'такой страицы несуществует';
+                $page_array['CONTENT'] = !empty($arr['article']) ? $arr['article'] : 'такой страицы несуществует';
 
             } else {
 
