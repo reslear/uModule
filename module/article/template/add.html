@@ -1,18 +1,33 @@
 <!--<header class="bckg-text">Добавление нового материала</header>-->
-<div class="block">
-    <h1>Добавление нового материала</h1>
-    <form id="article-add">
-          Категория: <select name="cat" value="1">
-              <option disabled>- нет - </option>
-                <option value="1">Статьи</option>
-                <option value="2">Скрипты</option>
-          </select><br><br>
-          Заголовок: <input type="text" name="title"><br><br>
-          Контент: <textarea name="text"></textarea><br>
 
-          <input type="hidden" name="type" value="add">
+<div class="block">
+    <h1><?if($ARTICLE_IS_EDIT$)?>Редактирование<?else?>Добавление нового<?endif?> материала</h1>
+    <form id="article-add">
+
+        <div>
+            Категория:
+            <select name="cat">$ARTICLE_CATS$</select>
+        </div>
+
+          Заголовок: <input type="text" name="title" value="$TITLE$"><br><br>
+          Контент: <textarea name="text">$TEXT$</textarea><br>
+
+            <?if($ARTICLE_IS_EDIT$)?>
+                <div class="cols">
+                    <div style="text-align:right">Дата:</div>
+                    <div><input type="text" name="date" value="$DATE$"></div>
+                    <div></div>
+                </div>
+                <div class="cols">
+                    <div style="text-align:right">Пользователь:</div>
+                    <div><input type="text" name="uid" value="$UID$"></div>
+                    <div></div>
+                </div>
+            <?endif?>
+
+          <input type="hidden" name="type" value="<?if($ARTICLE_IS_EDIT$)?>edit<?else?>add<?endif?>">
           <input type="hidden" name="error" value="">
 
-          <button type="">Добавить</button>
+          <center><button type=""><?if($ARTICLE_IS_EDIT$)?>Изменить<?else?>Добавить<?endif?></button></center>
     </form>
 </div>

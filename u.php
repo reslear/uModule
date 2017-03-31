@@ -26,6 +26,7 @@
 
     # Отображение ошибок, если указан параметр "error" (напр.: /php/u.php?error )
     if( isset($_REQUEST['error']) ) {
+        ini_set('html_errors', false);
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
@@ -33,9 +34,11 @@
 
     # подгружаем конфиг
     include 'engine/config.php';
+    # подгружаем функции
+    include 'engine/function.php';
 
     # Выходим если сайт закрыт      TODO: для групп
-    if( $___config['site_off'] && ucoz_getinfo('SITEUSERID') !== 1 ) {
+    if( $___config['site_off'] && F::check_right(array(1,2)) !== true ) {
         include 'engine/template/off.html';
         exit;
     }
@@ -55,7 +58,7 @@
 
     # Если админ панель
     if( isset($_REQUEST['admin']) && is_file('engine/admin/index.php') ) {
-        include 'engine/admin/index.php';
+        //TODO: include 'engine/admin/index.php';
 
     # Если Page
     } else if( !empty($___page) ) {

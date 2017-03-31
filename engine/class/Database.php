@@ -107,7 +107,6 @@
         }
 
         public function getAll( $column = '*', $where = '' ) {
-            echo 'SELECT '. $column .' FROM `'.  $this->table_name .'` '.$where;
             $status = $this->query( 'SELECT '. $column .' FROM `'.  $this->table_name .'` '.($where ? 'where '.$where : '') )->fetchAll(PDO::FETCH_ASSOC);
             return $status;
         }

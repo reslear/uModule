@@ -32,7 +32,7 @@ class User {
             return false;
         }
 
-        $api_array = getApi( 'index/8-'.$id );
+        $api_array = F::getApi( 'index/8-'.$id );
         if( !$api_array ) return false;
 
         $writeApi = $this->constArray( array(

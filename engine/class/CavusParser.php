@@ -37,7 +37,7 @@
             $result = $this->runCondition( $condition );
 
             $block = explode( '<?else?>', $content );
-            return $result ? $block[0] : ( isset($block[1]) ? $block[1] : '');
+            return $result ?  $block[0] : ( isset($block[1]) ? $block[1] : '');
         }
 
         public function replace_on_thisvar( $matches ) {
@@ -98,6 +98,7 @@
             // если файл
             if( strlen($source) <= 100 && is_file($source) ) {
                 $source = file_get_contents($source);
+                $source = str_replace("\xEF\xBB\xBF", '', $source);
             }
 
 

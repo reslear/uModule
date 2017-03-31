@@ -1,5 +1,6 @@
 <?php
 
+    if(!defined('uphp')) exit;
 
     // результат
     $result = $page['regex_result'];
@@ -18,7 +19,7 @@
         'PAGE_MODULE_NAME'  => $___module_name,
         'PAGE_MODULE_TITLE' => $___module_name == 'article' ? 'Статья' : ($___module_name == 'script' ? 'Cкрипт' : ''),
         'PAGE_MODULE_ID'    => $___module_id,
-        'PAGE_MODULE_URI'   => $___is_edit,
+        'PAGE_MODULE_URI'   => $___is_edit ? 'edit' : '',
     );
 
     // добавлем скрипт
@@ -30,27 +31,44 @@
         ### Если добавление
         if( $___is_add ){
 
-            $page_array['TITLE'] = 'Добавление нового '.$page_array['PAGE_MODULE_TITLE'];
-            $page_array['CONTENT'] = file_get_contents('module/article/template/add.html');
+            // проверка прав
+            $check_right = F::check_right(1);
 
-            $page_array['append']['_head'][] = '<!-- google captha <script src=""></script> -->';
+            if( $check_right === true ) {
+
+                $arr = $this->module->load(array('article'), '', array('add'=>$___module_name));
+
+                $page_array['TITLE'] = 'Добавление нового '.$page_array['PAGE_MODULE_TITLE'];
+                $page_array['CONTENT'] = $arr['article']['source'];
+
+                $page_array['append']['_head'][] = '<!-- google captha <script src=""></script> -->';
+
+            } else {
+                $page_array['CONTENT'] = $check_right;
+            }
+
 
         } else {
 
-            // Проверка на наличие id
-            if( $___module_id > 7) return false;
+            $get_params = array('type'=>'one', 'id'=> $___module_id );
+
+            if($___is_edit){
+                $get_params['edit'] = 1;
+            }
+
+            $arr = $this->module->load(array('article'), '', $get_params);
 
             ### если редактирование
             if($___is_edit) {
-
                 $page_array['TITLE'] = 'Редактирование '.$page_array['PAGE_MODULE_TITLE'].' '.$___module_id;
+                $page_array['CONTENT'] = isset($arr['article']) ? $arr['article']['source'] : 'такой страицы несуществует';
 
             } else {
 
                 ### если вывод материала
 
                 $page_array['TITLE'] = $page_array['PAGE_MODULE_TITLE'].' '.$___module_id;
-                $page_array['CONTENT'] = 'Шаблон '.$page_array['PAGE_MODULE_TITLE'].' '.$___module_id;
+                $page_array['CONTENT'] = $arr['article']['source'];
 
             }
 

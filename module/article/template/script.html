@@ -2,11 +2,23 @@
 var Article = (function() {
 
     var form = document.querySelector('#article-add');
+    var deleteButton = document.querySelectorAll('a[data-article-delete]');
 
     var events = {
         submit: function(e) {
             e.preventDefault();
             publicMethods.post();
+        },
+        remove: function(e){
+
+            e.preventDefault();
+
+            if( !e.target || !e.target.dataset.articleDelete ){
+                return false;
+            }
+
+            var id = e.target.dataset.articleDelete;
+            publicMethods.remove(id);
         }
     }
 
@@ -18,11 +30,33 @@ var Article = (function() {
                 form.addEventListener('submit', events.submit);
             }
 
+            [].forEach.call(deleteButton, function(item) {
+                item.addEventListener('click', events.remove);
+            });
+
         },
         post : function() {
             var formData = new FormData(form);
             post('/php/u.php?m=article', formData, function( resp ){
+                console.log(resp);
+            }, function() {
                 console.log(this);
+            });
+        },
+        remove: function(id) {
+
+            if(!id) {
+                return false;
+            }
+
+            var formData = new FormData();
+
+            formData.append('id', id);
+            formData.append('type', 'remove');
+            formData.append('error', '');   
+
+            post('/php/u.php?m=article', formData, function( resp ){
+                console.log(resp);
             }, function() {
                 console.log(this);
             });

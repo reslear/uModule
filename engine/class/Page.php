@@ -115,8 +115,14 @@
 
         public function search_module_in_array( $array ) {
 
+            function anon_cb($arr) {
+                foreach($arr as $i => $item) {
+                    $arr .= is_array($item) ? anon_cb($item) : $item;
+                }
+                return $arr;
+            }
 
-            $source = implode('', $array);
+            $source = anon_cb($array);
             preg_match_all('/\$MODULE\_(.+?)\$/sm', $source, $output_array);
 
             // удаляем дубликаты
@@ -188,6 +194,7 @@
                 unset($template_array['append']);
             }
 
+            header("Content-type: text/html; charset=utf-8");
             header('HTTP/1.1 200 OK', true, 200);
             return $this->template->parse($template_url, $template_array);
         }

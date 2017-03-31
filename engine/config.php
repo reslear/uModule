@@ -5,10 +5,9 @@
     if(!defined('uphp')) exit;   
 
     $___config = array(
-        'getApiKey' => '',
-        'echoError' => true,
+        'api_key' => '',
         'domain'    => 'http://upost.su',
-        'admin'     => array(3,4),
+        'admin'     => array(3,4),  // группы
         'noavatar'  => '/avatar/noava.png',
         'site_off'  => true
     );

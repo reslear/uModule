@@ -4,6 +4,7 @@ function post(url, data, cb, cbe) {
 
     var request = new XMLHttpRequest();
     request.open('POST', url, true);
+
     request.send(data);
 
     request.onload = function() {
