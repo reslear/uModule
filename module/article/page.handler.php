@@ -5,7 +5,7 @@
     // результат
     $result = $page['regex_result'];
 
-    if( !$result || !isset($result[1]) || !in_array($result[1], array('article', 'script') ) ) {
+    if( !$result || !isset($result[1]) || !in_array($result[1], array('article', 'script', 'all') ) ) {
         return false;
     }
 
@@ -25,16 +25,17 @@
     // добавлем скрипт
     $page_array['append']['_script'][] = file_get_contents('module/article/template/script.html');
 
-    // если передан id
-    if( $___module_id ) {
+
+    // если передан id, и вывод не всех для безопасности вроде напр.: /all/85
+    if( $___module_id && $___module_name !== 'all' ) {
 
         ### Если добавление
         if( $___is_add ){
 
             // проверка прав
-            $check_right = F::check_right(1);
+            $check_right = F::check_right( array( 'uid' => array(1) ) );
 
-            if( $check_right === true ) {
+            if( $check_right ) {
 
                 $arr = $this->module->load(array('article'), '', array('add'=>$___module_name));
 
@@ -44,24 +45,23 @@
                 $page_array['append']['_head'][] = '<!-- google captha <script src=""></script> -->';
 
             } else {
-                $page_array['CONTENT'] = $check_right;
+                $page_array['CONTENT'] = 'Вы не можете добавлять материалы.';
             }
 
 
         } else {
 
+            // параметры для загрузки модуля
             $get_params = array('type'=>'one', 'id'=> $___module_id );
+            if($___is_edit) $get_params['edit'] = 1;
 
-            if($___is_edit){
-                $get_params['edit'] = 1;
-            }
-
+            // подгрузка модуля
             $arr = $this->module->load(array('article'), '', $get_params);
 
             ### если редактирование
             if($___is_edit) {
                 $page_array['TITLE'] = 'Редактирование '.$page_array['PAGE_MODULE_TITLE'].' '.$___module_id;
-                $page_array['CONTENT'] = isset($arr['article']) ? $arr['article']['source'] : 'такой страицы несуществует';
+                $page_array['CONTENT'] = $arr['article'] ? $arr['article'] : 'такой страицы несуществует';
 
             } else {
 
@@ -78,7 +78,8 @@
 
         ### Если вывод всех
 
-        $arr = $this->module->load(array('article'), '', array('type'=>'all','cat'=> $___module_name));
+        $category = $___module_name === 'all' ? '' : $___module_name;
+        $arr = $this->module->load(array('article'), '', array('type'=>'all','cat'=> $category));
 
         $page_array['TITLE'] = 'Все';
         $page_array['CONTENT'] = isset($arr['article']) ? $this->template->parse($arr['article']['source'], $global_array) : '';

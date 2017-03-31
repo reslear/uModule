@@ -16,7 +16,7 @@
             'handler'  => 'engine/template/main_handler.php'
         ),
         'article_id' => array(
-            'regex'    => '/^(article|script)(?:\/|\/(\d+|add))?(?:\/)?(edit|)?$/',
+            'regex'    => '/^(article|script|all)(?:\/|\/(\d+|add))?(?:\/)?(edit|)?$/',
             'handler'  => 'module/article/page.handler.php'
         ),
     );

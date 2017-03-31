@@ -8,7 +8,7 @@ class Module {
 
     public function load($___modules, $___isEcho = '', $native_request = array() ) {
 
-        $return = array();
+        $___return = array();
 
         for( $i = 0; $i < count($___modules); $i++ ) {
 
@@ -43,16 +43,16 @@ class Module {
                 ob_end_clean();
 
                 if( !empty($___isEcho) ) {
-                    $return[$___isEcho.$___module] = $source;
+                    $___return[$___isEcho.$___module] = $source;
                 } else {
-                    if( !isset($return[$___module]['source']) && isset($source) ) {
-                        $return[$___module]['source'] = $source;
+                    if( !isset($___return[$___module]['source']) && isset($source) ) {
+                        $___return[$___module]['source'] = $source;
                     }
                 }
             }
         }
 
-        return $return;
+        return $___return;
     }
 }
 ?>

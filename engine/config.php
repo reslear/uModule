@@ -4,7 +4,7 @@
 
     if(!defined('uphp')) exit;   
 
-    $___config = array(
+    $GLOBALS['___config'] = array(
         'api_key' => '',
         'domain'    => 'http://upost.su',
         'admin'     => array(3,4),  // группы

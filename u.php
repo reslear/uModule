@@ -26,7 +26,7 @@
 
     # Отображение ошибок, если указан параметр "error" (напр.: /php/u.php?error )
     if( isset($_REQUEST['error']) ) {
-        ini_set('html_errors', false);
+        ini_set('html_errors', 1);
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
@@ -38,7 +38,7 @@
     include 'engine/function.php';
 
     # Выходим если сайт закрыт      TODO: для групп
-    if( $___config['site_off'] && F::check_right(array(1,2)) !== true ) {
+    if( $___config['site_off'] && !F::check_right(array( 'uid' => array(1,2) )) ) {
         include 'engine/template/off.html';
         exit;
     }

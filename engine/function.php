@@ -7,18 +7,21 @@
 
     class F {
 
-        static function check_right($uids, $error_text = 'У вас не достаточно прав') {
+        /* Функция для проверки прав текущего пользователя*/
+        static function check_right( $array, $true = true, $false = false ) {
             global $___config;
 
-            // по умолчанию админ id =1
-            $id = ucoz_getinfo('SITEUSERID');
-            $uids = $uids ? (is_array($uids) ? $uids : array($uids) ) : array(1);
+            // id текущего пользователя
+            $check_uid = ucoz_getinfo('SITEUSERID');
 
-            if( in_array($id, $uids, true) ){
-                return true;
+            // проверяем группу uid
+            if( isset($array['uid']) ) {
+                foreach( $array['uid'] as $uid ) {
+                    if( intval($check_uid) === intval($uid) ) return $true;
+                }
             }
 
-            return $error_text;
+            return $false;
         }
 
         /*  Функция по рекурсии заменяет значения первого массива на значения второго. */
@@ -291,8 +294,8 @@
                 'm' => $mon_diff.', '.$time,
                 'd' => $day_diff.' '.$time,
                 'H' => 'Сегодня в '.$time,
-                'i' => $minutes.' минут'.F::decl($minutes, array('а','ы',''), 0).' назад',
-                's' => $secunds.' секунд'.F::decl($secunds, array('а','ы',''), 0).' назад'
+                'i' => $minutes.' минут'.F::decl($minutes, array('а','ы',''), false).' назад',
+                's' => $secunds.' секунд'.F::decl($secunds, array('а','ы',''), false).' назад'
             );
 
             foreach( $time_age as $key => $line ){

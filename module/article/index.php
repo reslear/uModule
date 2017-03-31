@@ -73,22 +73,13 @@
 
         /*  Проверка по категории
         ------------------------------------------------------------------------------- */
-        public function check_category($key, $value = false, $false_result = false) {
+        public function check_category($key, $value, $false_result = false) {
 
             // $false_result = например можно указать ''
 
-            if( !isset($key) ) {
-                return $false_result;
-            }
 
-            // если передан массив
-            if( is_array($key) ) {
-                if( isset($key[0]) && isset($key[1]) ) {
-                    $value = $key[1];
-                    $key = $key[0];
-                } else {
-                    return $false_result;
-                }
+            if( !isset($key) || !isset($value)  ) {
+                return $false_result;
             }
 
             $all_cats = $this->default_cat;
@@ -112,15 +103,15 @@
 
         /*  Создание HTML списка SELECT
         ------------------------------------------------------------------------------- */
-        public function print_category( $select_id = 0, $select_template, $option_template ) {
+        public function print_category( $select_id = 0, $select_template = false, $option_template = false ) {
 
             // задаём дефольтные значения шаблонов
-            $select_template = isset($select_template) ? $select_template : '<select name="cat" id="select_category">%s</select>';
-            $option_template = isset($option_template) ? $option_template : '<option value="%1$d" %2$s>%3$s</option>';
+            $select_template = $select_template ? $select_template : '<select name="cat" id="select_category">%s</select>';
+            $option_template = $option_template ? $option_template : '<option value="%1$d" %2$s>%3$s</option>';
 
             // получаем данные категорий и добавляем первый пункт
             $all_cats = $this->default_cat;
-            array_unshift($all_cats, array( 'id' => 0, 'url' => '', 'title' => '- Выбрать -'));
+            array_unshift($all_cats, array( 'id' => 0, 'name' => '', 'title' => '- Выбрать -'));
 
             // переменная в которой будут пункты
             $options = '';
@@ -160,7 +151,7 @@
 
 
             // получаем данные категории
-            $category = $this->check_category($category);
+            $category = $this->check_category($category[0],$category[1]);
 
             // получаем массив из базы данных
             $database_result = $this->db->getAll( '*', ($category ? 'cat = '.$category['id'] : '') );
@@ -175,20 +166,23 @@
             foreach($database_result as $article) {
 
                 // создаём пользовательские переменные для использования в шаблоне
-                $array_view = F::create_uservar($array, 'ARTICLE');
+                $array_view = F::create_uservar($article, 'ARTICLE');
 
-                // получаем url категории, и готовим url
+                // получаем категорю по id, и готовим url
                 $article_cat = $this->check_category('id', $article['cat'], '');
-
-                $article_url = '$PAGE_MAIN_URL$'.$article_cat['url'].'/'.$article['id'];
+                $article_url = '$PAGE_MAIN_URL$'.$article_cat['name'].'/'.$article['id'];
 
                 // добавляем перемененные
                 $array_view = array_merge($array_view, array(
                     'ARTICLE_URL'  => $article_url,
                     'ARTICLE_DATE' => F::smart_date($article['date']),
 
-                    'ARTICLE_DELETE' => F::check_right($this->perm['remove']) === true ? 'javascript://" onclick="Article.remove('.$article['id'].');return false;' : '',
-                    'ARTICLE_EDIT' => F::check_right($this->perm['edit']) === true  || $article['uid'] === $this->uid ? $article_url.'/edit' : ''
+                    'ARTICLE_CAT_NAME' => $article_cat['name'],
+                    'ARTICLE_CAT_TITLE' => $article_cat['title'],
+                    'ARTICLE_CAT_URL' => '$PAGE_MAIN_URL$'.$article_cat['name'],
+
+                    'ARTICLE_DELETE' => F::check_right($this->perm['remove'], 'javascript://" onclick="Article.remove('.$article['id'].');return false;', ''),
+                    'ARTICLE_EDIT' => F::check_right($this->perm['edit']) || intval($article['uid']) === $this->uid ? $article_url.'/edit' : ''
                 ));
 
                 // шаблонизируем и добавляем в переменную body
@@ -245,28 +239,34 @@
             return isset($one['id']);
         }
 
-        public function print_edit($id, $is_add = false, $cat = 0) {
+        public function print_add_edit($id, $is_add = false, $cat = 0) {
 
             $edit_array = array();
 
+            // если редактирование
             if( !$is_add ) {
                 if(!F::has_int($id)) return false;
                 $edit_array = $this->db->getOne('id = '.$id );
+
+                // Если статья не найдена
+                if( !isset($edit_array['id']) ) {
+                    return false;
+                }
+
                 $cat = $edit_array['cat'];
             }
 
             if( $cat !== 0) {
-                $search = $this->search_cat_id(1, $cat);
-                $cat = $search[0];
+                $search = $this->check_category('name', $cat, '');
+                $cat = $search['id'];
             }
 
             $edit_array['ARTICLE_IS_EDIT'] = $is_add ? false : true;
-            $edit_array['ARTICLE_CATS'] = $this->print_cats($cat);
+            $edit_array['ARTICLE_CATS'] = $this->print_category($cat);
 
             $edit = $this->cavus->parse('module/article/template/add.html', $edit_array);
             return $edit;
         }
-
 
         public function remove($id) {
 
@@ -291,24 +291,25 @@
     $cat = array(
         array(
             'id' => 1,
-            'url' => 'article',
+            'name' => 'article',
             'title' => 'Статьи'
         ),
         array(
             'id' => 2,
-            'url' => 'script',
+            'name' => 'script',
             'title' => 'Скрипты'
         )
     );
 
     $perm = array(
+        'add' => array(
+            'uid' => array(1),
+        ),
         'remove' => array(
-            'uid' => array(1, 2),
-            'group' => array()
+            'uid' => array(1),
         ),
         'edit' => array(
-            'uid' => array(1,0),
-            'group' => array()
+            'uid' => array(1),
         ),
     );
 
@@ -350,45 +351,36 @@
     ----------------------------------------------------------------------------------*/
     if( isset($_GET['type']) && $_GET['type'] == 'all' ) {
 
-        $category = isset($_GET['cat']) ? $_GET['cat'] : '*';
-        $all = $article->print_all(array('url', $category));
+        $category = isset($_GET['cat']) ? $_GET['cat'] : '';
+        $all = $article->print_all(array('name', $category));
         echo $all;
     }
 
     # если загрузка только одной, или страница редактирования
-    if( isset($_GET['type']) && $_GET['type'] == 'one' && isset($_GET['id']) && F::has_int($_GET['id']) ) {
+    if( isset($_GET['type']) && $_GET['type'] === 'one' && isset($_GET['id']) && F::has_int($_GET['id']) ) {
 
         $id = intval($_GET['id']);
 
-        // права групп
-        $check_right = F::check_right( array($uid,1) );
-
         // Редактирование
         if( isset($_GET['edit']) ) {
-            if( $check_right === true ) {
 
-
-                if($article->is_idset($id)) {
-
-                    $edit = $article->print_edit($id);
-                    echo print_r($edit, true);
-                } else {
-                    echo 'нет такой';
-                }
-            }else{
-                echo $check_right;
-            }
+            // вывод страницы редактирования
+            $edit = $article->print_add_edit($id);
+            $___return[$___module] = $edit;
         } else {
+
+            // вывод полной статьи
             $one = $article->print_one($id);
             echo $one;
         }
     }
 
+    # загрузка страницы добавления
     if( isset($_GET['add']) ) {
 
         $temp_cat = strval($_GET['add']);
 
-        $write_status = $article->print_edit(0, 1, $temp_cat);
+        $write_status = $article->print_add_edit(0, 1, $temp_cat);
         echo $write_status;
     }
 
