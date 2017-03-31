@@ -196,6 +196,19 @@
         /*  ДЛЯ РАБОТЫ С ШАБЛОНАМИ
         ------------------------------------------------------------------------------- */
 
+        // функция создаёт пользовательские переменные F::create_uservar($array, 'ARTICLE')
+        static function create_uservar($original_array, $prefix) {
+
+            $array = array();
+
+            foreach($original_array as $key => $value) {
+                $new_key = $prefix.'_'.strtoupper($key);
+                $array[$new_key] = $value;
+            }
+
+            return $array;
+        }
+
         // функция для вывода колонок           TODO: array_extend
         static function print_columns($user_array, $num = 2, $only_source = false, $t_item = '<div class="col col-%1$d">%2$s</div>', $t_parent = '<div class="cols">%s</div>') {
 

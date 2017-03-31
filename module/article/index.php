@@ -68,25 +68,50 @@
             return $write_status;
         }
 
+
+
+
         /*  Проверка по категории
         ------------------------------------------------------------------------------- */
-        public function check_category($key, $value) {
+        public function check_category($key, $value = false, $false_result = false) {
+
+            // $false_result = например можно указать ''
+
+            if( !isset($key) ) {
+                return $false_result;
+            }
+
+            // если передан массив
+            if( is_array($key) ) {
+                if( isset($key[0]) && isset($key[1]) ) {
+                    $value = $key[1];
+                    $key = $key[0];
+                } else {
+                    return $false_result;
+                }
+            }
 
             $all_cats = $this->default_cat;
 
             // перебираем массив конфига категрий
             foreach($all_cats as $array) {
 
+                $check_key = $key === 'id' ? intval($value) : strval($value);
+
                 // если есть такой ключ, и значение ключа = значения
-                if( isset($array[$key]) && $array[$key] === $value ) {
+                if( isset($array[$key]) && $array[$key] === $check_key ) {
                     return $array;
                 }
             }
 
-            return false;
+            return $false_result;
         }
 
 
+
+
+        /*  Создание HTML списка SELECT
+        ------------------------------------------------------------------------------- */
         public function print_category( $select_id = 0, $select_template, $option_template ) {
 
             // задаём дефольтные значения шаблонов
@@ -125,34 +150,39 @@
             return $write ? print_r($new_db_array, true) : 'Ошибка, записи.';
         }
 
+
+
+
+
+        /*  Вывод HTML всех данных
+        ------------------------------------------------------------------------------- */
         public function print_all($category, $style_type = 1, $columns = 1, $reverse = true ) {
 
+
+            // получаем данные категории
+            $category = $this->check_category($category);
+
+            // получаем массив из базы данных
+            $database_result = $this->db->getAll( '*', ($category ? 'cat = '.$category['id'] : '') );
+            $style_template = F::get_file('module/article/template/view_type'.$style_type.'.html');
+
+            // массив переменныех для шаблонизации
             $array = array(
                 'ARTICLE_STYLE_TYPE' => $style_type
             );
 
-            // db
-            $_cat_index = $this->search_cat_id(1, $category);
-            $cat_index = $_cat_index[0];
+            // перебор данных
+            foreach($database_result as $article) {
 
-            if( !$cat_index ) {
-                return false;
-            }
+                // создаём пользовательские переменные для использования в шаблоне
+                $array_view = F::create_uservar($array, 'ARTICLE');
 
-            $all = $this->db->getAll( '*', 'cat = '.$cat_index );
-            $template_view = F::get_file('module/article/template/view_type'.$style_type.'.html');
+                // получаем url категории, и готовим url
+                $article_cat = $this->check_category('id', $article['cat'], '');
 
-            // перебор
-            foreach($all as $article) {
+                $article_url = '$PAGE_MAIN_URL$'.$article_cat['url'].'/'.$article['id'];
 
-                $array_view = array();
-
-                foreach($article as $key => $value) {
-                    $array_view['ARTICLE_'.strtoupper($key)] = $value;
-                }
-
-                $article_url = '$PAGE_MAIN_URL$'.$_cat_index[1].'/'.$article['id'];
-
+                // добавляем перемененные
                 $array_view = array_merge($array_view, array(
                     'ARTICLE_URL'  => $article_url,
                     'ARTICLE_DATE' => F::smart_date($article['date']),
@@ -161,7 +191,8 @@
                     'ARTICLE_EDIT' => F::check_right($this->perm['edit']) === true  || $article['uid'] === $this->uid ? $article_url.'/edit' : ''
                 ));
 
-                $array['ARTICLE_BODY'][] = $this->cavus->parse($template_view, $array_view);
+                // шаблонизируем и добавляем в переменную body
+                $array['ARTICLE_BODY'][] = $this->cavus->parse($style_template, $array_view);
             }
 
             // если ничего нет в body например материалов не найдено в категории
@@ -320,7 +351,7 @@
     if( isset($_GET['type']) && $_GET['type'] == 'all' ) {
 
         $category = isset($_GET['cat']) ? $_GET['cat'] : '*';
-        $all = $article->print_all($category);
+        $all = $article->print_all(array('url', $category));
         echo $all;
     }
 
